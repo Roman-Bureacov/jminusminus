@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/j2h.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javacc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-3.8.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -96,8 +96,20 @@ class Scanner {
                     while (ch != '\n' && ch != EOFCH) {
                         nextCh();
                     }
+                } else if (ch == '*') {
+                    // multi-line comment
+                    while (ch != EOFCH) {
+                        nextCh();
+                        if (ch == '*') {
+                            nextCh();
+                            if (ch == '/') {
+                                nextCh();
+                                break;
+                            }
+                        }
+                    }
                 } else {
-                    reportScannerError("Operator / is not supported in j--");
+                    return new TokenInfo(DIV, line);
                 }
             } else {
                 moreWhiteSpace = false;

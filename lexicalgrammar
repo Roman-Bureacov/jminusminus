@@ -8,6 +8,9 @@
 // Single line comment -- ignored
 "//" { ~( "\n" | "\r" ) } ( "\n" | "\r" ["\n"] )
 
+// Multi-line comments -- ignored
+"/*" { ~( "*/" ) } "*/"
+
 // Reserved words
 ABSTRACT       ::= "abstract"
 BOOLEAN        ::= "boolean"
@@ -58,6 +61,7 @@ MINUS          ::= "-"
 PLUS           ::= "+"
 PLUS_ASSIGN    ::= "+="
 STAR           ::= "*"
+DIV            ::= "/"
 
 // Identifiers
 IDENTIFIER     ::= ( "a"..."z" | "A"..."Z" | "_" | "$" )
