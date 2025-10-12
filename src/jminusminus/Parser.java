@@ -729,6 +729,8 @@ public class Parser {
             return new JGreaterThanOp(line, lhs, additiveExpression());
         } else if (have(LE)) {
             return new JLessEqualOp(line, lhs, additiveExpression());
+        } else if (have(LT)) {
+            return new JLessThanOp(line, lhs, additiveExpression());
         } else if (have(INSTANCEOF)) {
             return new JInstanceOfOp(line, lhs, referenceType());
         } else {

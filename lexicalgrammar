@@ -55,6 +55,7 @@ DEC            ::= "--"
 INC            ::= "++"
 
 GT             ::= ">"
+LT             ::= "<"
 LE             ::= "<="
 
 LAND           ::= "&&"
@@ -62,8 +63,8 @@ LNOT           ::= "!"
 
 MINUS          ::= "-"
 PLUS           ::= "+"
-STAR           ::= "*"
 DIV            ::= "/"
+STAR           ::= "*"
 
 PLUS_ASSIGN    ::= "+="
 

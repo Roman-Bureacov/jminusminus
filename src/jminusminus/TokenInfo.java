@@ -18,8 +18,18 @@ enum TokenKind {
     VOID("void"), WHILE("while"),
 
     // Operators.
-    ASSIGN("="), DEC("--"), EQUAL("=="), GT(">"), INC("++"), LAND("&&"), LE("<="), LNOT("!"),
-    MINUS("-"), PLUS("+"), PLUS_ASSIGN("+="), STAR("*"), DIV("/"),
+    ASSIGN("="), EQUAL("=="), DEC("--"), INC("++"),
+
+    GT(">"),
+    LT("<"),
+    LE("<="),
+
+    LAND("&&"),
+    LNOT("!"),
+    MINUS("-"), PLUS("+"),
+    DIV("/"), STAR("*"),
+
+    PLUS_ASSIGN("+="),
 
     // Separators.
     COMMA(","), DOT("."), LBRACK("["), LCURLY("{"), LPAREN("("), RBRACK("]"), RCURLY("}"),

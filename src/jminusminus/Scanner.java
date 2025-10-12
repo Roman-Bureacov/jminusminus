@@ -183,8 +183,8 @@ class Scanner {
                     nextCh();
                     return new TokenInfo(LE, line);
                 } else {
-                    reportScannerError("Operator < is not supported in j--");
-                    return getNextToken();
+                    nextCh();
+                    return new TokenInfo(LT, line);
                 }
             case '!':
                 nextCh();

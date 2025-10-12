@@ -68,12 +68,10 @@ conditionalAndExpression ::= equalityExpression { LAND equalityExpression }
 
 equalityExpression ::= relationalExpression { EQUAL relationalExpression }
 
-relationalExpression ::= additiveExpression [ ( GT | LE ) additiveExpression
+relationalExpression ::= additiveExpression [ ( GT | LE | LT ) additiveExpression
                                             | INSTANCEOF referenceType ]
 
 additiveExpression ::= multiplicativeExpression { ( MINUS | PLUS ) multiplicativeExpression }
-
-multiplicativeExpression ::= unaryExpression { STAR unaryExpression }
 
 unaryExpression ::= INC unaryExpression
                   | MINUS unaryExpression
