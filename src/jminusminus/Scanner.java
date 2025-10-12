@@ -176,7 +176,12 @@ class Scanner {
                 }
             case '>':
                 nextCh();
-                return new TokenInfo(GT, line);
+                if (ch == '=') {
+                    nextCh();
+                    return new TokenInfo(GTE, line);
+                } else {
+                    return new TokenInfo(GT, line);
+                }
             case '<':
                 nextCh();
                 if (ch == '=') {

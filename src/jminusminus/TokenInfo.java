@@ -21,6 +21,7 @@ enum TokenKind {
     ASSIGN("="), EQUAL("=="), DEC("--"), INC("++"),
 
     GT(">"),
+    GTE(">="),
     LT("<"),
     LE("<="),
 

@@ -68,7 +68,7 @@ conditionalAndExpression ::= equalityExpression { LAND equalityExpression }
 
 equalityExpression ::= relationalExpression { EQUAL relationalExpression }
 
-relationalExpression ::= additiveExpression [ ( GT | LE | LT ) additiveExpression
+relationalExpression ::= additiveExpression [ ( GT | GTE | LE | LT ) additiveExpression
                                             | INSTANCEOF referenceType ]
 
 additiveExpression ::= multiplicativeExpression { ( MINUS | PLUS ) multiplicativeExpression }
