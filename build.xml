@@ -37,7 +37,7 @@ An Ant build configuration file for the jminusminus compiler.
         <echo message="Compiling j-- source files..."/>
         <mkdir dir="${CLASS_DIR}" />
         <javac srcdir="${SRC_DIR}" destdir="${CLASS_DIR}" includes="jminusminus/**"
-               includeantruntime="false" debug="on">
+               includeantruntime="false" debug="on" release="11">
             <!-- Uncomment the following to see compiler warnings. -->
             <!-- <compilerarg value="-Xlint" />                    -->
         </javac>
@@ -107,6 +107,42 @@ An Ant build configuration file for the jminusminus compiler.
         <delete dir="${CLASS_DIR}" />
         <delete dir="${JAVADOC_DIR}" />
         <delete dir="${J2H_DIR}" />
+    </target>
+
+    <!--
+        compile the passing tests in tests/pass into tests/pass/compiled
+    -->
+
+    <path id="jmm.run.cp">
+        <pathelement location="${LIB_DIR}/j--.jar"/>
+    </path>
+    <pathconvert refid="jmm.run.cp" property="jmm.cp" pathsep="${path.separator}"/>
+
+    <target name="compile-pass" depends="jar">
+        <echo message="Cleaning out any existing class files..."/>
+        <!-- create new class files, overwrite existing ones -->
+        <mkdir dir="tests/pass/compiled"/>
+        <delete>
+            <fileset dir="tests/pass/compiled" includes="**/*.class"/>
+        </delete>
+
+        <fileset id="pass.src" dir="tests/pass">
+            <include name="**/*.java"/>
+        </fileset>
+        <pathconvert refid="pass.src" property="pass.src.list" pathsep=" " />
+
+        <echo message="Compiling classes..."/>
+        <apply executable="java" parallel="false" failonerror="true">
+            <arg value="-cp"/>
+            <arg value="${jmm.cp}"/>
+            <arg value="jminusminus.Main"/>
+            <arg value="-d"/>
+            <arg value="tests/pass/compiled"/>
+
+            <fileset dir="tests/pass">
+                <include name="**/*.java"/>
+            </fileset>
+        </apply>
     </target>
 
 </project>
