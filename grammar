@@ -66,6 +66,8 @@ assignmentExpression ::= conditionalAndExpression [ ( ASSIGN | PLUS_ASSIGN | MIN
 
 conditionalAndExpression ::= equalityExpression { LAND equalityExpression }
 
+conditionalOrExpression ::= conditionalAndExpression { LOR conditionalAndExpression }
+
 equalityExpression ::= relationalExpression { EQUAL relationalExpression }
 
 relationalExpression ::= additiveExpression [ ( GT | GTE | LE | LT ) additiveExpression

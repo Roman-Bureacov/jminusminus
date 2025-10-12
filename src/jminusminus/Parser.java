@@ -648,7 +648,7 @@ public class Parser {
      * Parses an assignment expression and returns an AST for it.
      *
      * <pre>
-     *   assignmentExpression ::= conditionalAndExpression
+     *   assignmentExpression ::= conditionalOrExpression
      *                                [ ( ASSIGN | PLUS_ASSIGN ) assignmentExpression ]
      * </pre>
      *
@@ -656,7 +656,7 @@ public class Parser {
      */
     private JExpression assignmentExpression() {
         int line = scanner.token().line();
-        JExpression lhs = conditionalAndExpression();
+        JExpression lhs = conditionalOrExpression();
         if (have(ASSIGN)) {
             return new JAssignOp(line, lhs, assignmentExpression());
         } else if (have(PLUS_ASSIGN)) {
@@ -684,6 +684,27 @@ public class Parser {
         while (more) {
             if (have(LAND)) {
                 lhs = new JLogicalAndOp(line, lhs, equalityExpression());
+            } else {
+                more = false;
+            }
+        }
+        return lhs;
+    }
+
+    /**
+     * Parses a conditional-or expression and returns an AST for it.
+     *
+     * <pre>
+     *     conditionalOrExpression ::= conditionalAndExpression {LOR conditionalAndExpression}
+     * </pre>
+     */
+    private JExpression conditionalOrExpression() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs = conditionalAndExpression();
+        while (more) {
+            if (have(LOR)) {
+                lhs = new JLogicalOrOp(line, lhs, conditionalAndExpression());
             } else {
                 more = false;
             }

@@ -140,7 +140,11 @@ class JLogicalOrOp extends JBooleanBinaryExpression {
      * {@inheritDoc}
      */
     public JExpression analyze(Context context) {
-        // TODO
+        lhs = (JExpression) lhs.analyze(context);
+        rhs = (JExpression) rhs.analyze(context);
+        lhs.type().mustMatchExpected(line(), Type.BOOLEAN);
+        rhs.type().mustMatchExpected(line(), Type.BOOLEAN);
+        type = Type.BOOLEAN;
         return this;
     }
 
@@ -148,7 +152,15 @@ class JLogicalOrOp extends JBooleanBinaryExpression {
      * {@inheritDoc}
      */
     public void codegen(CLEmitter output, String targetLabel, boolean onTrue) {
-        // TODO
+        if (onTrue) {
+            String falseLabel = output.createLabel();
+            lhs.codegen(output, falseLabel, false);
+            rhs.codegen(output, falseLabel, false);
+            output.addLabel(falseLabel);
+        } else {
+            lhs.codegen(output, targetLabel, false);
+            rhs.codegen(output, targetLabel, false);
+        }
     }
 }
 

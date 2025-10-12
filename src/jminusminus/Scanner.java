@@ -203,7 +203,18 @@ class Scanner {
                     nextCh();
                     return new TokenInfo(LAND, line);
                 } else {
+                    // TODO
                     reportScannerError("Operator & is not supported in j--");
+                    return getNextToken();
+                }
+            case '|':
+                nextCh();
+                if (ch == '|') {
+                    nextCh();
+                    return new TokenInfo(LOR, line);
+                } else {
+                    // TODO
+                    reportScannerError("Operator | is not supported in j--");
                     return getNextToken();
                 }
             case '\'':

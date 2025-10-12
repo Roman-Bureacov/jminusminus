@@ -27,6 +27,8 @@ enum TokenKind {
 
     LAND("&&"),
     LNOT("!"),
+    LOR("||"),
+
     MINUS("-"), PLUS("+"),
     DIV("/"), STAR("*"),
 
