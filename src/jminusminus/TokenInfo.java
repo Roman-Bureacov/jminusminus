@@ -31,6 +31,7 @@ enum TokenKind {
 
     MINUS("-"), PLUS("+"),
     DIV("/"), STAR("*"),
+    REM("%"),
 
     PLUS_ASSIGN("+="), MINS_ASSIGN("-="),
 

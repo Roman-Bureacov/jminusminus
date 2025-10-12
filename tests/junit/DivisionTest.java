@@ -1,6 +1,9 @@
 import junit.framework.TestCase;
 import pass.Division;
 
+/**
+ * Tests the division operator, based on the textbook example
+ */
 public class DivisionTest extends TestCase {
     private Division division;
 
