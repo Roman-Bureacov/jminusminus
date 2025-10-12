@@ -3,6 +3,7 @@ package junit;
 import junit.framework.TestCase;
 import pass.AndOperator;
 import pass.ConditionalCombination;
+import pass.NotOp;
 import pass.OrOperator;
 
 public class ConditionalTest extends TestCase {
@@ -29,6 +30,11 @@ public class ConditionalTest extends TestCase {
         assertEquals(true, AndOperator.op(true, true));
     }
 
+    public void testNot() {
+        assertEquals(false, NotOp.op(true));
+        assertEquals(true, NotOp.op(false));
+    }
+
     public void testCombinations() {
         // A && B || C
         assertEquals(true, ConditionalCombination.AndOr(true, true, false));
@@ -42,5 +48,29 @@ public class ConditionalTest extends TestCase {
         assertEquals(false, ConditionalCombination.OrAnd(false, true, false));
         assertEquals(false, ConditionalCombination.OrAnd(false, false, true));
 
+        // !a && b
+        assertEquals(false, ConditionalCombination.NotAnd(false, false));
+        assertEquals(true, ConditionalCombination.NotAnd(false, true));
+        assertEquals(false, ConditionalCombination.NotAnd(true, false));
+        assertEquals(false, ConditionalCombination.NotAnd(true, true));
+        
+        // a && !b
+        assertEquals(false, ConditionalCombination.AndNot(false, false));
+        assertEquals(false, ConditionalCombination.AndNot(false, true));
+        assertEquals(true, ConditionalCombination.AndNot(true, false));
+        assertEquals(false, ConditionalCombination.AndNot(true, true));
+        
+        // !a || b
+        assertEquals(true, ConditionalCombination.NotOr(false, false));
+        assertEquals(true, ConditionalCombination.NotOr(false, true));
+        assertEquals(false, ConditionalCombination.NotOr(true, false));
+        assertEquals(true, ConditionalCombination.NotOr(true, true));
+        
+        // a || !b
+        assertEquals(true, ConditionalCombination.OrNot(false, false));
+        assertEquals(false, ConditionalCombination.OrNot(false, true));
+        assertEquals(true, ConditionalCombination.OrNot(true, false));
+        assertEquals(true, ConditionalCombination.OrNot(true, true));
+        
     }
 }
