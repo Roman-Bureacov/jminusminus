@@ -6,7 +6,7 @@ public class MinusAssign {
         a -= 1;
     }
 
-    public static int op(int x) {
-        return x -= 1;
+    public static int op(int x, int y) {
+        return x -= y;
     }
 }

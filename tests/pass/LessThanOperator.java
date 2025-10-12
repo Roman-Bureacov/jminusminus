@@ -9,4 +9,8 @@ public class LessThanOperator {
         int y = 3;
         boolean c = x < 3;
     }
+
+    public static boolean op(int x, int y) {
+        return x < y;
+    }
 }
