@@ -62,7 +62,7 @@ statementExpression ::= expression
 
 expression ::= assignmentExpression
 
-assignmentExpression ::= conditionalAndExpression [ ( ASSIGN | PLUS_ASSIGN ) assignmentExpression ]
+assignmentExpression ::= conditionalAndExpression [ ( ASSIGN | PLUS_ASSIGN | MINS_ASSIGN ) assignmentExpression ]
 
 conditionalAndExpression ::= equalityExpression { LAND equalityExpression }
 

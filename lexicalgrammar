@@ -62,12 +62,14 @@ LE             ::= "<="
 LAND           ::= "&&"
 LNOT           ::= "!"
 
+
 MINUS          ::= "-"
 PLUS           ::= "+"
 DIV            ::= "/"
 STAR           ::= "*"
 
 PLUS_ASSIGN    ::= "+="
+MINS_ASSIGN    ::= "-="
 
 // Identifiers
 IDENTIFIER     ::= ( "a"..."z" | "A"..."Z" | "_" | "$" )

@@ -163,6 +163,9 @@ class Scanner {
                 if (ch == '-') {
                     nextCh();
                     return new TokenInfo(DEC, line);
+                } else if (ch == '=') {
+                    nextCh();
+                    return new TokenInfo(MINS_ASSIGN, line);
                 } else {
                     return new TokenInfo(MINUS, line);
                 }

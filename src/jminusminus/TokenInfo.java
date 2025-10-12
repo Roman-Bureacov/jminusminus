@@ -30,7 +30,7 @@ enum TokenKind {
     MINUS("-"), PLUS("+"),
     DIV("/"), STAR("*"),
 
-    PLUS_ASSIGN("+="),
+    PLUS_ASSIGN("+="), MINS_ASSIGN("-="),
 
     // Separators.
     COMMA(","), DOT("."), LBRACK("["), LCURLY("{"), LPAREN("("), RBRACK("]"), RCURLY("}"),
