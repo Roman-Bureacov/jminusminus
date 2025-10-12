@@ -1,5 +1,3 @@
-package junit;
-
 import junit.framework.TestCase;
 import pass.AndOperator;
 import pass.ConditionalCombination;
