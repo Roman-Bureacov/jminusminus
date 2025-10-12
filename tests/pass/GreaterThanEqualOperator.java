@@ -8,4 +8,8 @@ public class GreaterThanEqualOperator {
         int y = 2;
         boolean c = x >= y;
     }
+
+    public static boolean op(int x, int y) {
+        return x >= y;
+    }
 }
