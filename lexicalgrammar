@@ -50,18 +50,22 @@ SEMI           ::= ";"
 
 // Operators
 ASSIGN         ::= "="
-DEC            ::= "--"
 EQUAL          ::= "=="
-GT             ::= ">"
+DEC            ::= "--"
 INC            ::= "++"
-LAND           ::= "&&"
+
+GT             ::= ">"
 LE             ::= "<="
+
+LAND           ::= "&&"
 LNOT           ::= "!"
+
 MINUS          ::= "-"
 PLUS           ::= "+"
-PLUS_ASSIGN    ::= "+="
 STAR           ::= "*"
 DIV            ::= "/"
+
+PLUS_ASSIGN    ::= "+="
 
 // Identifiers
 IDENTIFIER     ::= ( "a"..."z" | "A"..."Z" | "_" | "$" )
