@@ -3,7 +3,7 @@ package junit;
 import junit.framework.TestCase;
 import pass.AndOperator;
 import pass.ConditionalCombination;
-import pass.NotOp;
+import pass.NotOperator;
 import pass.OrOperator;
 
 public class ConditionalTest extends TestCase {
@@ -31,8 +31,8 @@ public class ConditionalTest extends TestCase {
     }
 
     public void testNot() {
-        assertEquals(false, NotOp.op(true));
-        assertEquals(true, NotOp.op(false));
+        assertEquals(false, NotOperator.op(true));
+        assertEquals(true, NotOperator.op(false));
     }
 
     public void testCombinations() {

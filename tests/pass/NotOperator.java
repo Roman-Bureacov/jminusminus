@@ -1,6 +1,6 @@
 package pass;
 
-public class NotOp {
+public class NotOperator {
     public static boolean op(boolean b) {
         return !b;
     }
