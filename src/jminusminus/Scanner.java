@@ -357,10 +357,28 @@ class Scanner {
                         isDouble = true;
                     }
                 }
-                if (isDouble) {
-                    return new TokenInfo(DOUBLE_LITERAL, buffer.toString(), line);
-                } else {
-                    return new TokenInfo(INT_LITERAL, buffer.toString(), line);
+                switch (ch) {
+                    // suffixes
+                    case 'd': case 'D':
+                        buffer.append(ch);
+                        nextCh();
+                        return new TokenInfo(DOUBLE_LITERAL, buffer.toString(), line);
+                    case 'f': case 'F':
+                        buffer.append(ch);
+                        nextCh();
+                        return new TokenInfo(FLOAT_LITERAL, buffer.toString(), line);
+                    case 'l': case 'L':
+                        buffer.append(ch);
+                        nextCh();
+                        return new TokenInfo(LONG_LITERAL, buffer.toString(), line);
+
+                    // if no such suffix
+                    default:
+                        if (isDouble) {
+                            return new TokenInfo(DOUBLE_LITERAL, buffer.toString(), line);
+                        } else {
+                            return new TokenInfo(INT_LITERAL, buffer.toString(), line);
+                        }
                 }
             default:
                 if (isIdentifierStart(ch)) {
