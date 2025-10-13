@@ -19,6 +19,7 @@ enum TokenKind {
 
     // Operators.
     ASSIGN("="), EQUAL("=="), DEC("--"), INC("++"),
+    ASHR(">>"), ASHL("<<"), LSHR(">>>"),
 
     GT(">"),
     GTE(">="),
@@ -38,7 +39,11 @@ enum TokenKind {
     REM("%"),
 
     PLUS_ASSIGN("+="), MINS_ASSIGN("-="),
-    STAR_ASSIGN("*="),
+    STAR_ASSIGN("*="), DIV_ASSIGN("/="),
+    REM_ASSIGN("%="), AND_ASSIGN("&="),
+    OR_ASSIGN("|="), XOR_ASSIGN("^="),
+    ASHL_ASSIGN("<<="), ASHR_ASSIGN(">>="),
+    LSHR_ASSIGN(">>>="),
 
     // Separators.
     COMMA(","), DOT("."), LBRACK("["), LCURLY("{"), LPAREN("("), RBRACK("]"), RCURLY("}"),

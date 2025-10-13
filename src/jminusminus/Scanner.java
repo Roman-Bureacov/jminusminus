@@ -108,6 +108,9 @@ class Scanner {
                             }
                         }
                     }
+                } else if (ch == '=') {
+                    nextCh();
+                    return new TokenInfo(DIV_ASSIGN, line);
                 } else {
                     return new TokenInfo(DIV, line);
                 }
@@ -190,6 +193,17 @@ class Scanner {
                 if (ch == '=') {
                     nextCh();
                     return new TokenInfo(GTE, line);
+                } else if (ch == '>') {
+                    nextCh();
+                    if (ch == '>') {
+                        nextCh();
+                        return new TokenInfo(LSHR, line);
+                    } else if (ch == '=') {
+                        nextCh();
+                        return new TokenInfo(ASHR_ASSIGN, line);
+                    } else {
+                        return new TokenInfo(ASHR, line);
+                    }
                 } else {
                     return new TokenInfo(GT, line);
                 }
@@ -198,6 +212,14 @@ class Scanner {
                 if (ch == '=') {
                     nextCh();
                     return new TokenInfo(LE, line);
+                } else if (ch == '<') {
+                    nextCh();
+                    if (ch == '=') {
+                        nextCh();
+                        return new TokenInfo(ASHR_ASSIGN, line);
+                    } else {
+                        return new TokenInfo(ASHL, line);
+                    }
                 } else {
                     nextCh();
                     return new TokenInfo(LT, line);
@@ -210,6 +232,9 @@ class Scanner {
                 if (ch == '&') {
                     nextCh();
                     return new TokenInfo(LAND, line);
+                } else if (ch == '=') {
+                    nextCh();
+                    return new TokenInfo(AND_ASSIGN, line);
                 } else {
                     nextCh();
                     return new TokenInfo(BAND, line);
@@ -219,13 +244,21 @@ class Scanner {
                 if (ch == '|') {
                     nextCh();
                     return new TokenInfo(LOR, line);
+                } else if (ch == '=') {
+                    nextCh();
+                    return new TokenInfo(OR_ASSIGN, line);
                 } else {
                     nextCh();
                     return new TokenInfo(BOR, line);
                 }
             case '^':
                 nextCh();
-                return new TokenInfo(BXOR, line);
+                if (ch == '=') {
+                    nextCh();
+                    return new TokenInfo(XOR_ASSIGN, line);
+                } else {
+                    return new TokenInfo(BXOR, line);
+                }
             case '\'':
                 buffer = new StringBuffer();
                 buffer.append('\'');

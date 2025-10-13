@@ -1,8 +1,8 @@
 package pass;
 
-public class StarAssignOperator {
+public class DivAssignOperator {
     public static int op(int a, int b) {
-        a *= b;
+        a /= b;
         return a;
     }
 }

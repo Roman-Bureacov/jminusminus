@@ -1,7 +1,9 @@
 import static junit.framework.Assert.assertEquals;
 
 import junit.framework.TestCase;
+import pass.DivAssignOperator;
 import pass.RemainderOperator;
+import pass.StarAssignOperator;
 
 /**
  * Tests the arithmetic operators
@@ -19,5 +21,11 @@ public class ArithmeticTest extends TestCase {
         assertEquals(99, StarAssignOperator.op(3, 33));
         assertEquals(20, StarAssignOperator.op(4, 5));
         assertEquals(0, StarAssignOperator.op(4, 0));
+    }
+
+    public void testDivAssign() {
+        assertEquals(11, DivAssignOperator.op(33, 3));
+        assertEquals(1, DivAssignOperator.op(5, 5));
+        assertEquals(0, DivAssignOperator.op(0, 8));
     }
 }

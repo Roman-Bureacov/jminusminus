@@ -665,6 +665,8 @@ public class Parser {
             return new JMinusAssignOp(line, lhs, assignmentExpression());
         } else if (have(STAR_ASSIGN)) {
             return new JStarAssignOp(line, lhs, assignmentExpression());
+        } else if (have(DIV_ASSIGN)) {
+            return new JDivAssignOp(line, lhs, assignmentExpression());
         } else {
             return lhs;
         }
