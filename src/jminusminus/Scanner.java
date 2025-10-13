@@ -337,6 +337,24 @@ class Scanner {
             case EOFCH:
                 return new TokenInfo(EOF, line);
             case '0':
+                // must be either octal, hex, or binary
+                nextCh();
+                char intType = ch; // save type representation
+
+                buffer = new StringBuffer();
+                while (isDigit(ch)) {
+                    buffer.append(ch);
+                    nextCh();
+                }
+
+                switch(intType) { // read type representation
+                    case 'b': case 'B':
+                        return new TokenInfo(BINARY_INTEGER, buffer.toString(), line);
+                    case 'x': case 'X':
+                        return new TokenInfo(HEX_INTEGER, buffer.toString(), line);
+                    default:
+                        return new TokenInfo(OCTAL_INTEGER, buffer.toString(), line);
+                }
             case '1':
             case '2':
             case '3':
@@ -368,9 +386,13 @@ class Scanner {
                         nextCh();
                         return new TokenInfo(FLOAT_LITERAL, buffer.toString(), line);
                     case 'l': case 'L':
-                        buffer.append(ch);
-                        nextCh();
-                        return new TokenInfo(LONG_LITERAL, buffer.toString(), line);
+                        if (!isDouble) {
+                            buffer.append(ch);
+                            nextCh();
+                            return new TokenInfo(LONG_LITERAL, buffer.toString(), line);
+                        } else  {
+                            reportScannerError("floating-point definition on long integer");
+                        }
 
                     // if no such suffix
                     default:
