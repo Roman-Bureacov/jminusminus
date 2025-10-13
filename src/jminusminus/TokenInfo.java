@@ -29,6 +29,10 @@ enum TokenKind {
     LNOT("!"),
     LOR("||"),
 
+    BAND("&"),
+    BOR("|"),
+    BXOR("^"),
+
     MINUS("-"), PLUS("+"),
     DIV("/"), STAR("*"),
     REM("%"),

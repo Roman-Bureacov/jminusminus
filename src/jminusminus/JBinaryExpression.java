@@ -266,7 +266,16 @@ class JOrOp extends JBinaryExpression {
      * {@inheritDoc}
      */
     public JExpression analyze(Context context) {
-        // TODO
+        lhs = lhs.analyze(context);
+        rhs = rhs.analyze(context);
+        if (lhs.type() == Type.INT) {
+            rhs.type().mustMatchExpected(line(), Type.INT);
+            type = Type.INT;
+        } else {
+            lhs.type().mustMatchExpected(line(), Type.LONG);
+            rhs.type().mustMatchExpected(line(), Type.LONG);
+            type = Type.LONG;
+        }
         return this;
     }
 
@@ -274,7 +283,13 @@ class JOrOp extends JBinaryExpression {
      * {@inheritDoc}
      */
     public void codegen(CLEmitter output) {
-        // TODO
+        lhs.codegen(output);
+        rhs.codegen(output);
+        if (lhs.type() == Type.INT) {
+            output.addNoArgInstruction(IOR);
+        } else { // other type must be long
+            output.addNoArgInstruction(LOR);
+        }
     }
 }
 
@@ -297,7 +312,16 @@ class JXorOp extends JBinaryExpression {
      * {@inheritDoc}
      */
     public JExpression analyze(Context context) {
-        // TODO
+        lhs = lhs.analyze(context);
+        rhs = rhs.analyze(context);
+        if (lhs.type() == Type.INT) {
+            rhs.type().mustMatchExpected(line(), Type.INT);
+            type = Type.INT;
+        } else {
+            lhs.type().mustMatchExpected(line(), Type.LONG);
+            rhs.type().mustMatchExpected(line(), Type.LONG);
+            type = Type.LONG;
+        }
         return this;
     }
 
@@ -305,7 +329,13 @@ class JXorOp extends JBinaryExpression {
      * {@inheritDoc}
      */
     public void codegen(CLEmitter output) {
-        // TODO
+        lhs.codegen(output);
+        rhs.codegen(output);
+        if (lhs.type() == Type.INT) {
+            output.addNoArgInstruction(IXOR);
+        } else { // other type must be long
+            output.addNoArgInstruction(LXOR);
+        }
     }
 }
 
@@ -328,7 +358,16 @@ class JAndOp extends JBinaryExpression {
      * {@inheritDoc}
      */
     public JExpression analyze(Context context) {
-        // TODO
+        lhs = lhs.analyze(context);
+        rhs = rhs.analyze(context);
+        if (lhs.type() == Type.INT) {
+            rhs.type().mustMatchExpected(line(), Type.INT);
+            type = Type.INT;
+        } else {
+            lhs.type().mustMatchExpected(line(), Type.LONG);
+            rhs.type().mustMatchExpected(line(), Type.LONG);
+            type = Type.LONG;
+        }
         return this;
     }
 
@@ -336,7 +375,13 @@ class JAndOp extends JBinaryExpression {
      * {@inheritDoc}
      */
     public void codegen(CLEmitter output) {
-        // TODO
+        lhs.codegen(output);
+        rhs.codegen(output);
+        if (lhs.type() == Type.INT) {
+            output.addNoArgInstruction(IAND);
+        } else { // other type must be long
+            output.addNoArgInstruction(LAND);
+        }
     }
 }
 

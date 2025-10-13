@@ -739,7 +739,7 @@ public class Parser {
      * Parses a relational expression and returns an AST for it.
      *
      * <pre>
-     *   relationalExpression ::= additiveExpression [ ( GT | LE ) additiveExpression
+     *   relationalExpression ::= bitwiseExpression [ ( GT | LE | GTE | LT ) bitwiseExpression
      *                                               | INSTANCEOF referenceType ]
      * </pre>
      *
@@ -747,20 +747,83 @@ public class Parser {
      */
     private JExpression relationalExpression() {
         int line = scanner.token().line();
-        JExpression lhs = additiveExpression();
+        JExpression lhs = bitwiseExpression();
         if (have(GT)) {
-            return new JGreaterThanOp(line, lhs, additiveExpression());
+            return new JGreaterThanOp(line, lhs, bitwiseExpression());
         } else if (have(GTE)) {
-            return new JGreaterEqualOp(line, lhs, additiveExpression());
+            return new JGreaterEqualOp(line, lhs, bitwiseExpression());
         } else if (have(LE)) {
-            return new JLessEqualOp(line, lhs, additiveExpression());
+            return new JLessEqualOp(line, lhs, bitwiseExpression());
         } else if (have(LT)) {
-            return new JLessThanOp(line, lhs, additiveExpression());
+            return new JLessThanOp(line, lhs, bitwiseExpression());
         } else if (have(INSTANCEOF)) {
             return new JInstanceOfOp(line, lhs, referenceType());
         } else {
             return lhs;
         }
+    }
+
+    /**
+     * Parses a bitwise expression and returns an AST for it.
+     *
+     * <pre>
+     *   bitwiseExpression ::= bitwiseExclusiveOr { | bitwiseExclusiveOr }
+     * </pre>
+     */
+    private JExpression bitwiseExpression() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs = bitwiseExclusiveOr();
+        while (more) {
+            if (have(BOR)) {
+                lhs = new JOrOp(line, lhs, bitwiseExclusiveOr());
+            } else {
+                more = false;
+            }
+        }
+        return lhs;
+    }
+
+    /**
+     * Parses a bitwise exclusive or and returns an AST for it.
+     *
+     * <pre>
+     *   bitwiseExclusiveOr ::= bitwiseAnd { ^ bitwiseAnd }
+     * </pre>
+     */
+    private JExpression bitwiseExclusiveOr() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs = bitwiseAnd();
+        while (more) {
+            if (have(BXOR)) {
+                lhs = new JXorOp(line, lhs, bitwiseAnd());
+            } else {
+                more = false;
+            }
+        }
+        return lhs;
+    }
+
+    /**
+     * Parses a bitwise and and returns an AST for it.
+     *
+     * <pre>
+     *   bitwiseAnd ::= additiveExpression { & additiveExpression }
+     * </pre>
+     */
+    private JExpression bitwiseAnd() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs = additiveExpression();
+        while (more) {
+            if (have(BAND)) {
+                lhs = new JAndOp(line, lhs, additiveExpression());
+            } else {
+                more = false;
+            }
+        }
+        return lhs;
     }
 
     /**

@@ -62,7 +62,7 @@ statementExpression ::= expression
 
 expression ::= assignmentExpression
 
-assignmentExpression ::= conditionalAndExpression [ ( ASSIGN | PLUS_ASSIGN | MINS_ASSIGN ) assignmentExpression ]
+assignmentExpression ::= conditionalOrExpression [ ( ASSIGN | PLUS_ASSIGN | MINS_ASSIGN ) assignmentExpression ]
 
 conditionalAndExpression ::= equalityExpression { LAND equalityExpression }
 
@@ -70,10 +70,17 @@ conditionalOrExpression ::= conditionalAndExpression { LOR conditionalAndExpress
 
 equalityExpression ::= relationalExpression { EQUAL relationalExpression }
 
-relationalExpression ::= additiveExpression [ ( GT | GTE | LE | LT ) additiveExpression
+relationalExpression ::= bitwiseExpression [ ( GT | GTE | LE | LT ) bitwiseExpression
                                             | INSTANCEOF referenceType ]
 
+bitwiseExpression ::= bitwiseExclusiveOr { | bitwiseExclusiveOr }
+bitwiseExclusiveOr ::= bitwiseAnd { ^ bitwiseAnd }
+bitwiseAnd ::= additiveExpression { & additiveExpression }
+
 additiveExpression ::= multiplicativeExpression { ( MINUS | PLUS ) multiplicativeExpression }
+
+multiplicativeExpression ::= unaryExpression // level 2
+                                {(STAR | DIV | REM) unaryExpression}
 
 unaryExpression ::= INC unaryExpression
                   | MINUS unaryExpression
@@ -105,6 +112,3 @@ creator ::= ( basicType | qualifiedIdentifier )
 newArrayDeclarator ::= LBRACK expression RBRACK { LBRACK expression RBRACK } { LBRACK RBRACK }
 
 literal ::= CHAR_LITERAL | FALSE | INT_LITERAL | NULL | STRING_LITERAL | TRUE
-
-multiplicativeExpression ::= unaryExpression // level 2
-                                {(STAR | DIV | REM) unaryExpression}

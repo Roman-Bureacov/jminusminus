@@ -63,6 +63,10 @@ LAND           ::= "&&"
 LNOT           ::= "!"
 LOR            ::= "||"
 
+BAND           ::= "&"
+BOR            ::= "|"
+BXOR           ::= "^"
+
 MINUS          ::= "-"
 PLUS           ::= "+"
 DIV            ::= "/"
