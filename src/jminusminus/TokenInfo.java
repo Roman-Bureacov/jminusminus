@@ -38,6 +38,7 @@ enum TokenKind {
     REM("%"),
 
     PLUS_ASSIGN("+="), MINS_ASSIGN("-="),
+    STAR_ASSIGN("*="),
 
     // Separators.
     COMMA(","), DOT("."), LBRACK("["), LCURLY("{"), LPAREN("("), RBRACK("]"), RCURLY("}"),

@@ -14,4 +14,10 @@ public class ArithmeticTest extends TestCase {
         assertEquals(5, RemainderOperator.op(55,10));
         assertEquals(0, RemainderOperator.op(100,10));
     }
+
+    public void testStarAssign() {
+        assertEquals(99, StarAssignOperator.op(3, 33));
+        assertEquals(20, StarAssignOperator.op(4, 5));
+        assertEquals(0, StarAssignOperator.op(4, 0));
+    }
 }

@@ -75,6 +75,7 @@ REM            ::= "%"
 
 PLUS_ASSIGN    ::= "+="
 MINS_ASSIGN    ::= "-="
+STAR_ASSIGN    ::= "*="
 
 // Identifiers
 IDENTIFIER     ::= ( "a"..."z" | "A"..."Z" | "_" | "$" )
