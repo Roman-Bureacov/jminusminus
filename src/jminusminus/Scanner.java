@@ -346,12 +346,22 @@ class Scanner {
             case '7':
             case '8':
             case '9':
+                boolean isDouble = false;
                 buffer = new StringBuffer();
                 while (isDigit(ch)) {
                     buffer.append(ch);
                     nextCh();
+                    if (ch == '.') {
+                        buffer.append(ch);
+                        nextCh();
+                        isDouble = true;
+                    }
                 }
-                return new TokenInfo(INT_LITERAL, buffer.toString(), line);
+                if (isDouble) {
+                    return new TokenInfo(DOUBLE_LITERAL, buffer.toString(), line);
+                } else {
+                    return new TokenInfo(INT_LITERAL, buffer.toString(), line);
+                }
             default:
                 if (isIdentifierStart(ch)) {
                     buffer = new StringBuffer();
