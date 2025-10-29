@@ -343,8 +343,21 @@ class Scanner {
 
                 buffer = new StringBuffer();
                 while (isDigit(ch)) {
-                    buffer.append(ch);
-                    nextCh();
+                    switch (ch) {
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                            buffer.append(ch);
+                            nextCh();
+                            break;
+                        default:
+                            reportScannerError("Expected octal value");
+                    }
                 }
 
                 switch(intType) { // read type representation
