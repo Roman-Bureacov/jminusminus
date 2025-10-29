@@ -339,34 +339,65 @@ class Scanner {
             case '0':
                 // must be either octal, hex, or binary
                 nextCh();
-                char intType = ch; // save type representation
 
                 buffer = new StringBuffer();
-                while (isDigit(ch)) {
-                    switch (ch) {
-                        case '0':
-                        case '1':
-                        case '2':
-                        case '3':
-                        case '4':
-                        case '5':
-                        case '6':
-                        case '7':
-                            buffer.append(ch);
-                            nextCh();
-                            break;
-                        default:
-                            reportScannerError("Expected octal value");
+                if (isDigit(ch)) { // this number represents octal
+                    while (isDigit(ch)) {
+                        switch (ch) {
+                            case '0':
+                            case '1':
+                            case '2':
+                            case '3':
+                            case '4':
+                            case '5':
+                            case '6':
+                            case '7':
+                                buffer.append(ch);
+                                nextCh();
+                                break;
+                            default:
+                                reportScannerError("Expected octal value");
+                        }
                     }
+                    return new TokenInfo(OCTAL_INTEGER, buffer.toString(), line);
                 }
 
-                switch(intType) { // read type representation
-                    case 'b': case 'B':
-                        return new TokenInfo(BINARY_INTEGER, buffer.toString(), line);
-                    case 'x': case 'X':
-                        return new TokenInfo(HEX_INTEGER, buffer.toString(), line);
+                switch(ch) { // read type representation
+                    case 'b': case 'B': // this number represents binary
+                        while (isDigit(ch)) {
+                            switch (ch) {
+                                case '0':
+                                case '1':
+                                    buffer.append(ch);
+                                    nextCh();
+                                    break;
+                                default:
+                                    return new TokenInfo(BINARY_INTEGER, buffer.toString(), line);
+                            }
+                        }
+                    case 'x': case 'X': // this number represents hexadecimal
+                        while (true) {
+                            if (isDigit(ch)) {
+                                buffer.append(ch);
+                                nextCh();
+                            } else {
+                                switch (ch) {
+                                    case 'a': case 'A':
+                                    case 'b': case 'B':
+                                    case 'c': case 'C':
+                                    case 'd': case 'D':
+                                    case 'e': case 'E':
+                                    case 'f': case 'F':
+                                        buffer.append(ch);
+                                        nextCh();
+                                        break;
+                                    default:
+                                        return new TokenInfo(HEX_INTEGER, buffer.toString(), line);
+                                }
+                            }
+                        }
                     default:
-                        return new TokenInfo(OCTAL_INTEGER, buffer.toString(), line);
+
                 }
             case '1':
             case '2':
