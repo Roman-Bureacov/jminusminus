@@ -374,14 +374,15 @@ class Scanner {
                                 case '1':
                                     buffer.append(ch);
                                     nextCh();
+                                // case 'l': case 'L':
                                 default:
                                     return new TokenInfo(BINARY_INTEGER, buffer.toString(), line);
                             }
                         }
                     case 'x': case 'X': // this number is octal
+                        buffer.append(ch);
+                        nextCh();
                         while (true) {
-                            buffer.append(ch);
-                            nextCh();
                             if (isDigit(ch)) {
                                 buffer.append(ch);
                                 nextCh();
@@ -394,6 +395,8 @@ class Scanner {
                                     case 'e': case 'E':
                                     case 'f': case 'F':
                                         buffer.append(ch);
+                                        nextCh();
+                                    // case 'l': case 'L':
                                     default:
                                         return new TokenInfo(HEX_INTEGER, buffer.toString(), line);
                                 }
@@ -426,7 +429,11 @@ class Scanner {
                     if (!isOctal) {
                         reportScannerError("Octal literal expected");
                     } else { // if we only read integers not including 8 and 9
-                        return new TokenInfo(OCTAL_INTEGER, buffer.toString(), line);
+                        if (ch == 'l' || ch == 'L') {
+                            buffer.append(ch);
+                            nextCh();
+                            return new TokenInfo(LONG_LITERAL, buffer.toString(), line);
+                        } else return new TokenInfo(OCTAL_INTEGER, buffer.toString(), line);
                     }
                 } else { // these are leading zeroes in some real value
                     do {

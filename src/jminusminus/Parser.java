@@ -567,6 +567,8 @@ public class Parser {
             return Type.CHAR;
         } else if (have(INT)) {
             return Type.INT;
+        } else if (have(LONG)) {
+            return Type.LONG;
         } else if (have(DOUBLE)) {
             return Type.DOUBLE;
         } else if (have(FLOAT)) {
@@ -1124,7 +1126,8 @@ public class Parser {
      * Parses a literal and returns an AST for it.
      *
      * <pre>
-     *   literal ::= CHAR_LITERAL | FALSE | INT_LITERAL | NULL | STRING_LITERAL | TRUE
+     *   literal ::= CHAR_LITERAL | FALSE | INT_LITERAL | LONG_LITERAL | DOUBLE_LITERAL
+     *               | FLOAT_LITERAL | NULL | STRING_LITERAL | TRUE
      * </pre>
      *
      * @return an AST for a literal.
@@ -1137,6 +1140,8 @@ public class Parser {
             return new JLiteralBoolean(line, scanner.previousToken().image());
         } else if (have(INT_LITERAL)) {
             return new JLiteralInt(line, scanner.previousToken().image());
+        } else if (have(LONG_LITERAL)) {
+            return new JLiteralLong(line, scanner.previousToken().image());
         } else if (have(DOUBLE_LITERAL)) {
             return new JLiteralDouble(line, scanner.previousToken().image());
         } else if (have(FLOAT_LITERAL)) {
