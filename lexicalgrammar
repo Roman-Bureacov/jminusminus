@@ -99,6 +99,7 @@ LOR            ::= "||"
 BAND           ::= "&"
 BOR            ::= "|"
 BXOR           ::= "^"
+BNOT           ::= "~"
 
 MINUS          ::= "-"
 PLUS           ::= "+"

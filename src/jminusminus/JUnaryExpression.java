@@ -356,3 +356,34 @@ class JPreDecrementOp extends JUnaryExpression {
         // TODO
     }
 }
+
+
+/**
+ * The AST node for a not (&amp;) expression.
+ */
+class JNotOp extends JUnaryExpression {
+    /**
+     * Constructs an AST node for a pre-decrement expression.
+     *
+     * @param line    line in which the expression occurs in the source file.
+     * @param operand the operand.
+     */
+    public JNotOp(int line, JExpression operand) {
+        super(line, "~", operand);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public JExpression analyze(Context context) {
+        // TODO
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void codegen(CLEmitter output) {
+        // TODO
+    }
+}

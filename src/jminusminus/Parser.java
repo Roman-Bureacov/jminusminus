@@ -357,12 +357,12 @@ public class Parser {
         } else if (have(FOR)) {
             mustBe(LPAREN);
             ArrayList<JStatement> init = new ArrayList<>();
-            while (!see(SEMI)) {
+            while (!have(SEMI)) {
                 init.add(statement());
             }
             JExpression condition = expression();
             ArrayList<JStatement> update = new ArrayList<>();
-            while (!see(SEMI)) {
+            while (!have(SEMI)) {
                 update.add(statement());
             }
             JStatement statement = statement();
@@ -948,9 +948,10 @@ public class Parser {
      *
      * <pre>
      *   unaryExpression ::= INC unaryExpression
-     *                     | DEC unaryExpression
-     *                     | MINUS unaryExpression
-     *                     | simpleUnaryExpression
+     *     | DEC unaryExpression
+     *     | MINUS unaryExpression
+     *     | NOT unaryExpression
+     *     | simpleUnaryExpression
      * </pre>
      *
      * @return an AST for an unary expression.
@@ -961,6 +962,8 @@ public class Parser {
             return new JPreIncrementOp(line, unaryExpression());
         } else if (have(DEC)) {
             return new JPreDecrementOp(line, unaryExpression());
+        } else if (have(BNOT)) {
+            return new JNotOp(line, unaryExpression());
         } else if (have(MINUS)) {
             return new JNegateOp(line, unaryExpression());
         } else {

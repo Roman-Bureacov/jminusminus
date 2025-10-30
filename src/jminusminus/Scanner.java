@@ -285,6 +285,9 @@ class Scanner {
                     nextCh();
                     return new TokenInfo(BOR, line);
                 }
+            case '~':
+                nextCh();
+                return new TokenInfo(BNOT, line);
             case '^':
                 nextCh();
                 if (ch == '=') {

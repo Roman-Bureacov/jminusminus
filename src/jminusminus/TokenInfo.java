@@ -78,6 +78,7 @@ enum TokenKind {
     BAND("&"),
     BOR("|"),
     BXOR("^"),
+    BNOT("~"),
 
     MINUS("-"), PLUS("+"),
     DIV("/"), STAR("*"),

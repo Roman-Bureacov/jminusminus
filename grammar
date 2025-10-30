@@ -72,11 +72,11 @@ conditionalOrExpression ::= conditionalAndExpression { LOR conditionalAndExpress
 
 conditionalAndExpression ::= bitwiseOrExpression { LAND bitwiseOrExpression }
 
-bitwiseOrExpression ::= bitwiseExclusiveOrExpression { | bitwiseExclusiveOrExpression }
+bitwiseOrExpression ::= bitwiseExclusiveOrExpression { BOR bitwiseExclusiveOrExpression }
 
-bitwiseExclusiveOrExpression ::= bitwiseAndExpression { ^ bitwiseAndExpression }
+bitwiseExclusiveOrExpression ::= bitwiseAndExpression { XOR bitwiseAndExpression }
 
-bitwiseAndExpression ::= equalityExpression { & equalityExpression }
+bitwiseAndExpression ::= equalityExpression { BAND equalityExpression }
 
 equalityExpression ::= relationalExpression { EQUAL relationalExpression }
 
@@ -94,6 +94,7 @@ multiplicativeExpression ::= unaryExpression // level 2
 unaryExpression ::= INC unaryExpression
                   | DEC unaryExpression
                   | MINUS unaryExpression
+                  | NOT unaryExpression
                   | simpleUnaryExpression
 
 simpleUnaryExpression ::= LNOT unaryExpression
