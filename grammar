@@ -70,7 +70,7 @@ conditionalOrExpression ::= conditionalAndExpression { LOR conditionalAndExpress
 
 equalityExpression ::= relationalExpression { EQUAL relationalExpression }
 
-relationalExpression ::= bitwiseExpression [ ( GT | GTE | LE | LT ) bitwiseExpression
+relationalExpression ::= bitwiseExpression [ ( GT | GE | LE | LT ) bitwiseExpression
                                             | INSTANCEOF referenceType ]
 
 bitwiseExpression ::= bitwiseExclusiveOr { | bitwiseExclusiveOr }
