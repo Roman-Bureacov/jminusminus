@@ -54,6 +54,11 @@ class Type {
     public final static Type DOUBLE = typeFor(double.class);
 
     /**
+     * The float type.
+     */
+    public final static Type FLOAT = typeFor(float.class);
+
+    /**
      * The java.lang.Integer type.
      */
     public final static Type BOXED_INT = typeFor(java.lang.Integer.class);
@@ -77,6 +82,11 @@ class Type {
      * The java.lang.Double type.
      */
     public final static Type BOXED_DOUBLE = typeFor(java.lang.Double.class);
+
+    /**
+     * The java.lang.Float type.
+     */
+    public final static Type BOXED_FLOAT = typeFor(java.lang.Float.class);
 
     /**
      * The java.lang.String type.

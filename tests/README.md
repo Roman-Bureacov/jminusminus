@@ -1,0 +1,1 @@
+The testing of this project has unit test that make use of `junit-3.8.2`. 

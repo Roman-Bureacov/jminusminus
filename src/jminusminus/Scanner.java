@@ -152,9 +152,6 @@ class Scanner {
             case ',':
                 nextCh();
                 return new TokenInfo(COMMA, line);
-            case '.':
-                nextCh();
-                return new TokenInfo(DOT, line);
             case '[':
                 nextCh();
                 return new TokenInfo(LBRACK, line);
@@ -336,47 +333,55 @@ class Scanner {
                 return new TokenInfo(STRING_LITERAL, buffer.toString(), line);
             case EOFCH:
                 return new TokenInfo(EOF, line);
+            case '.':
+                nextCh();
+                if (!isDigit(ch)) {
+                    return new TokenInfo(DOT, line);
+                } else {
+                    buffer = new StringBuffer();
+                    while (isDigit(ch)) {
+                        buffer.append(ch);
+                        nextCh();
+                    }
+
+                    switch (ch) {
+                        case 'f': case 'F':
+                            buffer.append(ch);
+                            nextCh();
+                            return new TokenInfo(FLOAT_LITERAL, buffer.toString(), line);
+                        case 'd': case 'D':
+                            buffer.append(ch);
+                            nextCh();
+                            return new TokenInfo(DOUBLE_LITERAL, buffer.toString(), line);
+                        default:
+                            return new TokenInfo(DOUBLE_LITERAL, buffer.toString(), line);
+                    }
+                }
             case '0':
-                // must be either octal, hex, or binary
+                // must be either octal, hex, binary, or leading zeroes in a double or float
+                buffer = new StringBuffer();
+                buffer.append(ch);
                 nextCh();
 
-                buffer = new StringBuffer();
-                if (isDigit(ch)) { // this number represents octal
-                    while (isDigit(ch)) {
-                        switch (ch) {
-                            case '0':
-                            case '1':
-                            case '2':
-                            case '3':
-                            case '4':
-                            case '5':
-                            case '6':
-                            case '7':
-                                buffer.append(ch);
-                                nextCh();
-                                break;
-                            default:
-                                reportScannerError("Expected octal value");
-                        }
-                    }
-                    return new TokenInfo(OCTAL_INTEGER, buffer.toString(), line);
-                }
-
-                switch(ch) { // read type representation
-                    case 'b': case 'B': // this number represents binary
+                // if it follows...
+                switch(ch) {
+                    case 'b': case 'B': // this number is binary
+                        buffer.append(ch);
+                        nextCh();
                         while (isDigit(ch)) {
                             switch (ch) {
                                 case '0':
                                 case '1':
                                     buffer.append(ch);
                                     nextCh();
-                                    break;
                                 default:
                                     return new TokenInfo(BINARY_INTEGER, buffer.toString(), line);
                             }
                         }
-                    case 'x': case 'X': // this number represents hexadecimal
+                    case 'x': case 'X': // this number is octal
                         while (true) {
+                            buffer.append(ch);
+                            nextCh();
                             if (isDigit(ch)) {
                                 buffer.append(ch);
                                 nextCh();
@@ -389,16 +394,61 @@ class Scanner {
                                     case 'e': case 'E':
                                     case 'f': case 'F':
                                         buffer.append(ch);
-                                        nextCh();
-                                        break;
                                     default:
                                         return new TokenInfo(HEX_INTEGER, buffer.toString(), line);
                                 }
                             }
                         }
-                    default:
-
                 }
+
+                // then it is either octal or a double with leading zeroes
+
+                boolean isOctal = true;
+
+                while (isDigit(ch)) {
+                    switch(ch) {
+                        case '8': case '9': isOctal = false;
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                            buffer.append(ch);
+                            nextCh();
+                            break;
+                    }
+                }
+
+                if (ch != '.') {
+                    if (!isOctal) {
+                        reportScannerError("Octal literal expected");
+                    } else { // if we only read integers not including 8 and 9
+                        return new TokenInfo(OCTAL_INTEGER, buffer.toString(), line);
+                    }
+                } else { // these are leading zeroes in some real value
+                    do {
+                        buffer.append(ch);
+                        nextCh();
+                    } while (isDigit(ch));
+
+                    // final optional character decides if float or double
+                    switch (ch) {
+                        case 'f': case 'F':
+                            buffer.append(ch);
+                            nextCh();
+                            return new TokenInfo(FLOAT_LITERAL, buffer.toString(), line);
+                        case 'd': case'D':
+                            buffer.append(ch);
+                            nextCh();
+                            return new TokenInfo(DOUBLE_LITERAL, buffer.toString(), line);
+                        default:
+                            return new TokenInfo(DOUBLE_LITERAL, buffer.toString(), line);
+                    }
+                }
+
             case '1':
             case '2':
             case '3':
@@ -408,17 +458,23 @@ class Scanner {
             case '7':
             case '8':
             case '9':
-                boolean isDouble = false;
+                boolean isFloatingPoint = false;
                 buffer = new StringBuffer();
+                // read \d+.\d+
                 while (isDigit(ch)) {
                     buffer.append(ch);
                     nextCh();
-                    if (ch == '.') {
-                        buffer.append(ch);
-                        nextCh();
-                        isDouble = true;
-                    }
                 }
+                if (ch == '.') {
+                    buffer.append(ch);
+                    nextCh();
+                    isFloatingPoint = true;
+                }
+                while (isDigit(ch)) {
+                    buffer.append(ch);
+                    nextCh();
+                }
+
                 switch (ch) {
                     // suffixes
                     case 'd': case 'D':
@@ -430,7 +486,7 @@ class Scanner {
                         nextCh();
                         return new TokenInfo(FLOAT_LITERAL, buffer.toString(), line);
                     case 'l': case 'L':
-                        if (!isDouble) {
+                        if (!isFloatingPoint) {
                             buffer.append(ch);
                             nextCh();
                             return new TokenInfo(LONG_LITERAL, buffer.toString(), line);
@@ -440,7 +496,7 @@ class Scanner {
 
                     // if no such suffix
                     default:
-                        if (isDouble) {
+                        if (isFloatingPoint) {
                             return new TokenInfo(DOUBLE_LITERAL, buffer.toString(), line);
                         } else {
                             return new TokenInfo(INT_LITERAL, buffer.toString(), line);

@@ -555,7 +555,7 @@ public class Parser {
      * Parses and returns a basic type.
      *
      * <pre>
-     *   basicType ::= BOOLEAN | CHAR | INT
+     *   basicType ::= BOOLEAN | CHAR | INT | DOUBLE | FLOAT
      * </pre>
      *
      * @return a basic type.
@@ -567,6 +567,10 @@ public class Parser {
             return Type.CHAR;
         } else if (have(INT)) {
             return Type.INT;
+        } else if (have(DOUBLE)) {
+            return Type.DOUBLE;
+        } else if (have(FLOAT)) {
+            return Type.FLOAT;
         } else {
             reportParserError("Type sought where %s found", scanner.token().image());
             return Type.ANY;
@@ -1133,6 +1137,10 @@ public class Parser {
             return new JLiteralBoolean(line, scanner.previousToken().image());
         } else if (have(INT_LITERAL)) {
             return new JLiteralInt(line, scanner.previousToken().image());
+        } else if (have(DOUBLE_LITERAL)) {
+            return new JLiteralDouble(line, scanner.previousToken().image());
+        } else if (have(FLOAT_LITERAL)) {
+            return new JLiteralFloat(line, scanner.previousToken().image());
         } else if (have(NULL)) {
             return new JLiteralNull(line);
         } else if (have(STRING_LITERAL)) {
