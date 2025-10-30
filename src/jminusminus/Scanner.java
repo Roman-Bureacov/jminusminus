@@ -218,7 +218,7 @@ class Scanner {
                 nextCh();
                 if (ch == '=') {
                     nextCh();
-                    return new TokenInfo(GTE, line);
+                    return new TokenInfo(GE, line);
                 } else if (ch == '>') {
                     nextCh();
                     if (ch == '>') {

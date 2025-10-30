@@ -760,7 +760,7 @@ public class Parser {
         JExpression lhs = bitwiseExpression();
         if (have(GT)) {
             return new JGreaterThanOp(line, lhs, bitwiseExpression());
-        } else if (have(GTE)) {
+        } else if (have(GE)) {
             return new JGreaterEqualOp(line, lhs, bitwiseExpression());
         } else if (have(LE)) {
             return new JLessEqualOp(line, lhs, bitwiseExpression());

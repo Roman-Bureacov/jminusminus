@@ -67,7 +67,7 @@ enum TokenKind {
     ASHR(">>"), ASHL("<<"), LSHR(">>>"),
 
     GT(">"),
-    GTE(">="),
+    GE(">="),
     LT("<"),
     LE("<="),
 
