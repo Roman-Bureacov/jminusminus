@@ -53,7 +53,7 @@ arguments ::= LPAREN [ expression { COMMA expression } ] RPAREN
 
 type ::= referenceType | basicType
 
-basicType ::= BOOLEAN | CHAR | INT | DOUBLE | FLOAT
+basicType ::= BOOLEAN | CHAR | INT | LONG | DOUBLE | FLOAT
 
 referenceType ::= basicType LBRACK RBRACK { LBRACK RBRACK }
                 | qualifiedIdentifier { LBRACK RBRACK }

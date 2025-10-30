@@ -555,7 +555,7 @@ public class Parser {
      * Parses and returns a basic type.
      *
      * <pre>
-     *   basicType ::= BOOLEAN | CHAR | INT | DOUBLE | FLOAT
+     *   basicType ::= BOOLEAN | CHAR | INT | LONG | DOUBLE | FLOAT
      * </pre>
      *
      * @return a basic type.
