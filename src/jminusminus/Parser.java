@@ -354,6 +354,20 @@ public class Parser {
             JExpression test = parExpression();
             JStatement statement = statement();
             return new JWhileStatement(line, test, statement);
+        } else if (have(FOR)) {
+            mustBe(LPAREN);
+            ArrayList<JStatement> init = new ArrayList<>();
+            while (!see(SEMI)) {
+                init.add(statement());
+            }
+            JExpression condition = expression();
+            ArrayList<JStatement> update = new ArrayList<>();
+            while (!see(SEMI)) {
+                update.add(statement());
+            }
+            JStatement statement = statement();
+            mustBe(RPAREN);
+            return new JForStatement(line, init, condition, update, statement);
         } else {
             // Must be a statementExpression.
             JStatement statement = statementExpression();
@@ -934,6 +948,7 @@ public class Parser {
      *
      * <pre>
      *   unaryExpression ::= INC unaryExpression
+     *                     | DEC unaryExpression
      *                     | MINUS unaryExpression
      *                     | simpleUnaryExpression
      * </pre>
@@ -944,6 +959,8 @@ public class Parser {
         int line = scanner.token().line();
         if (have(INC)) {
             return new JPreIncrementOp(line, unaryExpression());
+        } else if (have(DEC)) {
+            return new JPreDecrementOp(line, unaryExpression());
         } else if (have(MINUS)) {
             return new JNegateOp(line, unaryExpression());
         } else {
@@ -994,8 +1011,13 @@ public class Parser {
         while (see(DOT) || see(LBRACK)) {
             primaryExpr = selector(primaryExpr);
         }
-        while (have(DEC)) {
-            primaryExpr = new JPostDecrementOp(line, primaryExpr);
+        while (see(INC) || see(DEC)) {
+            if (have(DEC)) {
+                primaryExpr = new JPostDecrementOp(line, primaryExpr);
+            } else {
+                mustBe(INC);
+                primaryExpr = new JPostIncrementOp(line, primaryExpr);
+            }
         }
         return primaryExpr;
     }

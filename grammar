@@ -31,6 +31,8 @@ statement ::= block
             | RETURN [ expression ] SEMI
             | SEMI
             | WHILE parExpression statement
+            | FOR LPAREN expression SEMI expression SEMI expression RPAREN statement
+            | FOR LPAREN expression COLN expression RPAREN statement
             | statementExpression SEMI
 
 formalParameters ::= LPAREN [ formalParameter { COMMA formalParameter } ] RPAREN
@@ -90,6 +92,7 @@ multiplicativeExpression ::= unaryExpression // level 2
                                 {(STAR | DIV | REM) unaryExpression}
 
 unaryExpression ::= INC unaryExpression
+                  | DEC unaryExpression
                   | MINUS unaryExpression
                   | simpleUnaryExpression
 

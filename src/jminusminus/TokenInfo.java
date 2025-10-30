@@ -92,7 +92,7 @@ enum TokenKind {
 
     // Separators.
     COMMA(","), DOT("."), LBRACK("["), LCURLY("{"), LPAREN("("), RBRACK("]"), RCURLY("}"),
-    RPAREN(")"), SEMI(";"),
+    RPAREN(")"), SEMI(";"), COLN(":"),
 
     // Identifiers.
     IDENTIFIER("<IDENTIFIER>"),

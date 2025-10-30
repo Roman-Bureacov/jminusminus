@@ -76,6 +76,7 @@ RBRACK         ::= "]"
 RCURLY         ::= "}"
 RPAREN         ::= ")"
 SEMI           ::= ";"
+COLN           ::= ":"
 
 // Operators
 ASSIGN         ::= "="

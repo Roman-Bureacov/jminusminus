@@ -173,6 +173,9 @@ class Scanner {
             case ';':
                 nextCh();
                 return new TokenInfo(SEMI, line);
+            case ':':
+                nextCh();
+                return new TokenInfo(COLN, line);
             case '*':
                 nextCh();
                 if (ch == '=') {
