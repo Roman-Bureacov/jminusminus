@@ -62,20 +62,27 @@ statementExpression ::= expression
 
 expression ::= assignmentExpression
 
-assignmentExpression ::= conditionalOrExpression [ ( ASSIGN | PLUS_ASSIGN | MINS_ASSIGN | STAR_ASSIGN | DIV_ASSGIN ) assignmentExpression ]
-
-conditionalAndExpression ::= equalityExpression { LAND equalityExpression }
+assignmentExpression ::= conditionalOrExpression [ ( ASSIGN | PLUS_ASSIGN
+                                                    | MINS_ASSIGN | STAR_ASSIGN
+                                                    | DIV_ASSGIN ) assignmentExpression ]
 
 conditionalOrExpression ::= conditionalAndExpression { LOR conditionalAndExpression }
 
+conditionalAndExpression ::= bitwiseOrExpression { LAND bitwiseOrExpression }
+
+bitwiseOrExpression ::= bitwiseExclusiveOrExpression { | bitwiseExclusiveOrExpression }
+
+bitwiseExclusiveOrExpression ::= bitwiseAndExpression { ^ bitwiseAndExpression }
+
+bitwiseAndExpression ::= equalityExpression { & equalityExpression }
+
 equalityExpression ::= relationalExpression { EQUAL relationalExpression }
 
-relationalExpression ::= bitwiseExpression [ ( GT | GE | LE | LT ) bitwiseExpression
+relationalExpression ::= bitShiftExpression [ ( GT | GE | LE | LT ) bitShiftExpression
                                             | INSTANCEOF referenceType ]
 
-bitwiseExpression ::= bitwiseExclusiveOr { | bitwiseExclusiveOr }
-bitwiseExclusiveOr ::= bitwiseAnd { ^ bitwiseAnd }
-bitwiseAnd ::= additiveExpression { & additiveExpression }
+bitShiftExpression ::= additiveExpression { (ASHL | ASHR | LSHR) additiveExpression }
+
 
 additiveExpression ::= multiplicativeExpression { ( MINUS | PLUS ) multiplicativeExpression }
 

@@ -223,7 +223,12 @@ class Scanner {
                     nextCh();
                     if (ch == '>') {
                         nextCh();
-                        return new TokenInfo(LSHR, line);
+                        if (ch == '=') {
+                            nextCh();
+                            return new TokenInfo(LSHR_ASSIGN, line);
+                        } else {
+                            return new TokenInfo(LSHR, line);
+                        }
                     } else if (ch == '=') {
                         nextCh();
                         return new TokenInfo(ASHR_ASSIGN, line);

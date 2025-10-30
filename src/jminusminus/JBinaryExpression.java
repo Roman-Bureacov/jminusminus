@@ -404,7 +404,16 @@ class JALeftShiftOp extends JBinaryExpression {
      * {@inheritDoc}
      */
     public JExpression analyze(Context context) {
-        // TODO
+        lhs = lhs.analyze(context);
+        rhs = rhs.analyze(context);
+        if (lhs.type() == Type.INT) {
+            rhs.type().mustMatchExpected(line(), Type.INT);
+            type = Type.INT;
+        } else {
+            lhs.type().mustMatchExpected(line(), Type.LONG);
+            rhs.type().mustMatchExpected(line(), Type.LONG);
+            type = Type.LONG;
+        }
         return this;
     }
 
