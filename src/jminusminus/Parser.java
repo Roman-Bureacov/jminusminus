@@ -1310,6 +1310,8 @@ public class Parser {
             scanner.returnToPosition();
             return true;
         }
+
+
         if (!see(IDENTIFIER)) {
             scanner.returnToPosition();
             return false;
@@ -1332,7 +1334,13 @@ public class Parser {
         if (!have(RPAREN)) {
             scanner.returnToPosition();
             return false;
+        } else {
+            if (!have(IDENTIFIER)) {
+                scanner.returnToPosition();
+                return false;
+            }
         }
+
         scanner.returnToPosition();
         return true;
     }
