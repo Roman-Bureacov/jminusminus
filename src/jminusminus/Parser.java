@@ -367,9 +367,17 @@ public class Parser {
             JStatement statement = null;
 
             if (seeEnhancedFor()) {
-                // TODO: for each loop
+                Type type = type(); // we are guaranteed that there was a reference type
+                mustBe(IDENTIFIER);
+                String name = scanner.previousToken().image();
+                JVariableDeclarator declarator = new JVariableDeclarator(line, name, type, null);
+                mustBe(COLN);
+                JExpression iterName = expression();
+                mustBe(RPAREN);
 
-                reportParserError("Enhanced for loop not yet implemented.");
+                statement = statement();
+
+                return new JForeachStatement(line, declarator, iterName, statement);
             } else {
                 if (!see(SEMI)) {
                     if (seeLocalVariableDeclaration()) {
@@ -1346,14 +1354,25 @@ public class Parser {
                     return false;
                 }
             }
+        } else if (seeBasicType()) {
+            scanner.next();
+        } else {
+                scanner.returnToPosition();
+                return false;
         }
         // we read an identifier
 
         if (!have(IDENTIFIER)) {
-            scanner.recordPosition();
+            scanner.returnToPosition();
             return false;
         } else {
-            return have(COLN);
+            if (have(COLN)) {
+                scanner.returnToPosition();
+                return true;
+            } else {
+                scanner.returnToPosition();
+                return false;
+            }
         }
 
     }

@@ -4,8 +4,6 @@ package jminusminus;
 
 import java.util.ArrayList;
 
-import static jminusminus.CLConstants.*;
-
 /**
  * The AST node for a for-statement.
  */
@@ -79,6 +77,73 @@ class JForStatement extends JStatement {
             for (JStatement stmt : update) {
                 stmt.toJSON(e1);
             }
+        }
+        if (body != null) {
+            JSONElement e1 = new JSONElement();
+            e.addChild("Body", e1);
+            body.toJSON(e1);
+        }
+    }
+}
+
+/**
+ * The AST node for a foreach-statement.
+ */
+class JForeachStatement extends JStatement {
+    // Test expression
+    private JVariableDeclarator declarator;
+
+    // Update.
+    private JExpression name;
+
+    // The body.
+    private JStatement body;
+
+    /**
+     * Constructs an AST node for a for-statement.
+     *
+     * @param line       line in which the for-statement occurs in the source file.
+     * @param declarator the loop variable declarator.
+     * @param name       the name of the iterated variable.
+     * @param body       the body.
+     */
+    public JForeachStatement(int line, JVariableDeclarator declarator, JExpression name, JStatement body) {
+        super(line);
+        this.declarator = declarator;
+        this.name = name;
+        this.body = body;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public JForeachStatement analyze(Context context) {
+        // TODO
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void codegen(CLEmitter output) {
+        // TODO
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toJSON(JSONElement json) {
+        JSONElement e = new JSONElement();
+        json.addChild("JForeachStatement:" + line, e);
+        if (declarator != null) {
+            JSONElement e1 = new JSONElement();
+            e.addChild("Declarator", e1);
+            declarator.toJSON(e1);
+        }
+        if (name != null) {
+            JSONElement e1 = new JSONElement();
+            e.addChild("Update", e1);
+            name.toJSON(e1);
         }
         if (body != null) {
             JSONElement e1 = new JSONElement();
