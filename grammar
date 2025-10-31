@@ -66,9 +66,11 @@ statementExpression ::= expression
 
 expression ::= assignmentExpression
 
-assignmentExpression ::= conditionalOrExpression [ ( ASSIGN | PLUS_ASSIGN
+assignmentExpression ::= ternaryExpression [ ( ASSIGN | PLUS_ASSIGN
                                                     | MINS_ASSIGN | STAR_ASSIGN
                                                     | DIV_ASSGIN ) assignmentExpression ]
+
+ternaryExpression ::=  conditionalOrExpression [ QUESTION expression COLN expression ]
 
 conditionalOrExpression ::= conditionalAndExpression { LOR conditionalAndExpression }
 

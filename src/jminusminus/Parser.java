@@ -2,7 +2,6 @@
 
 package jminusminus;
 
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import static jminusminus.TokenKind.*;
@@ -718,7 +717,7 @@ public class Parser {
      */
     private JExpression assignmentExpression() {
         int line = scanner.token().line();
-        JExpression lhs = conditionalOrExpression();
+        JExpression lhs = ternaryExpression();
         if (have(ASSIGN)) {
             return new JAssignOp(line, lhs, assignmentExpression());
         } else if (have(PLUS_ASSIGN)) {
@@ -738,6 +737,29 @@ public class Parser {
         } else {
             return lhs;
         }
+    }
+
+
+    /**
+     * Parses a ternary expression and returns an AST for it.
+     *
+     * <pre>
+     *   ternaryExpression ::=  conditionalOrExpression [ QUESTION expression COLN expression ]
+     * </pre>
+     *
+     * @return an AST for a ternary expression.
+     */
+    private JExpression ternaryExpression() {
+        int line = scanner.token().line();
+        JExpression lhs = conditionalOrExpression();
+        if (have(QUESTION)) {
+            JExpression ifTrue = expression();
+            mustBe(COLN);
+            JExpression ifFalse = expression();
+            lhs = new JTernaryExpression(line, lhs, ifTrue, ifFalse);
+        }
+
+        return lhs;
     }
 
     /**
