@@ -37,6 +37,11 @@ statement ::= block
             | FOR LPAREN expression COLN expression RPAREN statement
             | statementExpression SEMI
             | SWITCH parExpression LCURLY [ switchBody ] RCURLY
+            | TRY block (catches | catchesFinally)
+
+catches ::= CATCH LPAREN formalParameter RPAREN block
+
+catchesFinally ::= [ catches ] FINALLY block
 
 switchBody ::= { CASE expression COLN { statement } } [DEFAULT COLN { statement }]
 

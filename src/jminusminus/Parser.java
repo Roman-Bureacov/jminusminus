@@ -417,6 +417,31 @@ public class Parser {
             ArrayList<SwitchStatementGroup> group = switchBody();
             mustBe(RCURLY);
             return new JSwitchStatement(line, condition, group);
+        } else if (have(TRY)) {
+            JBlock block = block();
+            ArrayList<JFormalParameter> par = null;
+            ArrayList<JBlock> catchBlocks = null;
+            JBlock fin = null;
+
+            if (see(CATCH)) {
+                par = new ArrayList<>();
+                catchBlocks = new ArrayList<>();
+
+                while (have(CATCH)) {
+                    mustBe(LPAREN);
+                    par.add(formalParameter());
+                    mustBe(RPAREN);
+                    catchBlocks.add(block());
+                }
+
+                if (have(FINALLY)) {
+                    fin = block();
+                }
+            } else {
+                mustBe(FINALLY);
+                fin = block();
+            }
+            return new JTryStatement(line, block, par, catchBlocks, fin);
         } else {
             // Must be a statementExpression.
             JStatement statement = statementExpression();
