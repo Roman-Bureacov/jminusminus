@@ -368,6 +368,7 @@ public class Parser {
 
             if (seeEnhancedFor()) {
                 // TODO: for each loop
+
                 reportParserError("Enhanced for loop not yet implemented.");
             } else {
                 if (!see(SEMI)) {
@@ -377,7 +378,10 @@ public class Parser {
                         do {
                             init.add(statementExpression());
                         } while (have(COMMA));
+                        mustBe(SEMI);
                     }
+                } else {
+                    mustBe(SEMI);
                 }
 
                 if (!see(SEMI)) {
