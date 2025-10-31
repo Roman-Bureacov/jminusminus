@@ -442,6 +442,8 @@ public class Parser {
                 fin = block();
             }
             return new JTryStatement(line, block, par, catchBlocks, fin);
+        } else if (have(THROW)) {
+            return new JThrowStatement(line, expression());
         } else {
             // Must be a statementExpression.
             JStatement statement = statementExpression();
