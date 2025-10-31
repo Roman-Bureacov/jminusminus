@@ -339,6 +339,9 @@ public class Parser {
         int line = scanner.token().line();
         if (see(LCURLY)) {
             return block();
+        } else if (have(BREAK)) {
+            mustBe(SEMI);
+            return new JBreakStatement(line);
         } else if (have(IF)) {
             JExpression test = parExpression();
             JStatement consequent = statement();
@@ -408,12 +411,62 @@ public class Parser {
 
             statement = statement();
             return new JForStatement(line, init, condition, update, statement);
+        } else if (have(SWITCH)) {
+            JExpression condition = parExpression();
+            mustBe(LCURLY);
+            ArrayList<SwitchStatementGroup> group = switchBody();
+            mustBe(RCURLY);
+            return new JSwitchStatement(line, condition, group);
         } else {
             // Must be a statementExpression.
             JStatement statement = statementExpression();
             mustBe(SEMI);
             return statement;
         }
+    }
+
+    private ArrayList<SwitchStatementGroup> switchBody() {
+        ArrayList<SwitchStatementGroup> switchBody = new ArrayList<>();
+        ArrayList<JStatement> group;
+        ArrayList<JExpression> labels;
+
+        while (!see(RCURLY)) {
+            if (have(CASE)) {
+                labels = new ArrayList<>();
+                do {
+                    labels.add(expression());
+                    mustBe(COLN);
+                } while (have(CASE));
+
+                group = new ArrayList<>();
+                if (have(DEFAULT)) {
+                    mustBe(COLN);
+                    while (!see(RCURLY)) {
+                        group.add(statement());
+                    }
+                    switchBody.add(new SwitchStatementGroup(labels, group));
+
+                } else {
+                    while (!see(CASE) && !see(DEFAULT) && !see(RCURLY)) {
+                        group.add(statement());
+                    }
+
+                    switchBody.add(new SwitchStatementGroup(labels, group));
+                }
+            } else if (have(DEFAULT)) {
+                mustBe(COLN);
+                labels = new ArrayList<>();
+                group = new ArrayList<>();
+                while (!see(RCURLY)) {
+                    group.add(statement());
+                }
+
+                switchBody.add(new SwitchStatementGroup(labels, group));
+                break;
+            }
+        }
+
+        return switchBody;
     }
 
     /**
