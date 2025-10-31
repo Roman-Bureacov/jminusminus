@@ -430,6 +430,9 @@ public class Parser {
         ArrayList<JStatement> group;
         ArrayList<JExpression> labels;
 
+        // TODO: intermittent defaults, perhaps default is semantics and not a parsing problem
+        // perhaps the label itself if null
+
         while (!see(RCURLY)) {
             if (have(CASE)) {
                 labels = new ArrayList<>();
