@@ -327,6 +327,10 @@ public class Parser {
      *               | RETURN [ expression ] SEMI
      *               | SEMI
      *               | WHILE parExpression statement
+     *               | FOR LPAREN [localVariableDeclarationStatement] SEMI
+     *                            [expression] SEMI
+     *                            [statementExpression] RPAREN statement
+     *               | FOR LPAREN expression COLN expression RPAREN statement
      *               | statementExpression SEMI
      * </pre>
      *
@@ -358,22 +362,40 @@ public class Parser {
         } else if (have(FOR)) {
             mustBe(LPAREN);
             ArrayList<JStatement> init = new ArrayList<>();
-            if (!see(SEMI)) {
-                do {
-                    init.add(blockStatement());
-                } while (have(COMMA));
-            }
-            mustBe(SEMI);
-
-            JExpression condition = expression();
             ArrayList<JStatement> update = new ArrayList<>();
-            do {
-                update.add(statementExpression());
-            } while (have(COMMA));
-            mustBe(SEMI);
+            JExpression condition = null;
+            JStatement statement = null;
 
-            JStatement statement = statement();
-            mustBe(RPAREN);
+            if (seeEnhancedFor()) {
+                // TODO: for each loop
+                reportParserError("Enhanced for loop not yet implemented.");
+            } else {
+                if (!see(SEMI)) {
+                    if (seeLocalVariableDeclaration()) {
+                        init.add(localVariableDeclarationStatement());
+                    } else {
+                        do {
+                            init.add(statementExpression());
+                        } while (have(COMMA));
+                    }
+                }
+
+                if (!see(SEMI)) {
+                    condition = expression();
+                }
+
+                mustBe(SEMI);
+
+                if (!see(RPAREN)) {
+                    do {
+                        update.add(statementExpression());
+                    } while (have(COMMA));
+                }
+
+                mustBe(RPAREN);
+            }
+
+            statement = statement();
             return new JForStatement(line, init, condition, update, statement);
         } else {
             // Must be a statementExpression.
@@ -1304,6 +1326,32 @@ public class Parser {
         boolean result = have(IDENTIFIER) && see(LPAREN);
         scanner.returnToPosition();
         return result;
+    }
+
+    /**
+     * Looks ahead for enhanced for loop
+     * @return true if this is an enhanced for loop, false otherwise
+     */
+    private boolean seeEnhancedFor() {
+        scanner.recordPosition();
+        if (have(IDENTIFIER)) {
+            // A qualified identifier is ok.
+            while (have(DOT)) {
+                if (!have(IDENTIFIER)) {
+                    scanner.returnToPosition();
+                    return false;
+                }
+            }
+        }
+        // we read an identifier
+
+        if (!have(IDENTIFIER)) {
+            scanner.recordPosition();
+            return false;
+        } else {
+            return have(COLN);
+        }
+
     }
 
     // Returns true if we are looking at a cast (basic or reference), and false otherwise.
