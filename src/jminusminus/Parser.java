@@ -292,13 +292,13 @@ public class Parser {
     }
 
     /**
-     * Parses a throwsClause and returns an AST for it.
+     * Parses a throwsClause and returns an array list for the identifiers .
      *
      * <pre>
      *     throwsClause ::= THROWS qualifiedIdentifier { COMMA qualifiedIdentifier }
      * </pre>
      *
-     * @return an AST for a throwsClause
+     * @return an array list for a throwsClause
      */
     private ArrayList<TypeName> throwsClause() {
         ArrayList<TypeName> exc = new ArrayList<>();
@@ -353,15 +353,19 @@ public class Parser {
      *
      * <pre>
      *   statement ::= block
-     *               | IF parExpression statement [ ELSE statement ]
-     *               | RETURN [ expression ] SEMI
-     *               | SEMI
-     *               | WHILE parExpression statement
-     *               | FOR LPAREN [localVariableDeclarationStatement] SEMI
-     *                            [expression] SEMI
-     *                            [statementExpression] RPAREN statement
-     *               | FOR LPAREN expression COLN expression RPAREN statement
-     *               | statementExpression SEMI
+     *             | IF parExpression statement [ ELSE statement ]
+     *             | RETURN [ expression ] SEMI
+     *             | BREAK SEMI
+     *             | SEMI
+     *             | WHILE parExpression statement
+     *             | FOR LPAREN [localVariableDeclarationStatement] SEMI
+     *                          [expression] SEMI
+     *                          [statementExpression] RPAREN statement
+     *             | FOR LPAREN expression COLN expression RPAREN statement
+     *             | statementExpression SEMI
+     *             | SWITCH parExpression LCURLY [ switchBody ] RCURLY
+     *             | TRY block (catches | catchesFinally)
+     *             | THROW
      * </pre>
      *
      * @return an AST for a statement.
@@ -483,46 +487,41 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a switch body and returns an array list of switch statement groups
+     * <pre>
+     *      switchBody ::= { (CASE | DEFAULT) COLN [ block ] }
+     * </pre>
+     * @return the array list of switch statement groups
+     */
     private ArrayList<SwitchStatementGroup> switchBody() {
         ArrayList<SwitchStatementGroup> switchBody = new ArrayList<>();
         ArrayList<JStatement> group;
         ArrayList<JExpression> labels;
 
-        // TODO: intermittent defaults, perhaps default is semantics and not a parsing problem
-        // perhaps the label itself if null
-
         while (!see(RCURLY)) {
-            if (have(CASE)) {
+            if (have(CASE) || see(DEFAULT)) {
                 labels = new ArrayList<>();
+                group = new ArrayList<>();
+
+                // append switch labels
                 do {
-                    labels.add(expression());
-                    mustBe(COLN);
-                } while (have(CASE));
-
-                group = new ArrayList<>();
-                if (have(DEFAULT)) {
-                    mustBe(COLN);
-                    while (!see(RCURLY)) {
-                        group.add(statement());
+                    if (have(DEFAULT)) {
+                        labels.add(null);
+                    } else {
+                        labels.add(expression());
                     }
-                    switchBody.add(new SwitchStatementGroup(labels, group));
+                    mustBe(COLN);
+                } while (have(CASE) || see(DEFAULT));
 
-                } else {
-                    while (!see(CASE) && !see(DEFAULT) && !see(RCURLY)) {
-                        group.add(statement());
-                    }
-
-                    switchBody.add(new SwitchStatementGroup(labels, group));
-                }
-            } else if (have(DEFAULT)) {
-                mustBe(COLN);
-                labels = new ArrayList<>();
-                group = new ArrayList<>();
-                while (!see(RCURLY)) {
+                // append switch body statements
+                while (!see(CASE) && !see(DEFAULT) && !see(RCURLY)) {
                     group.add(statement());
                 }
 
                 switchBody.add(new SwitchStatementGroup(labels, group));
+            } else {
+                mustBe(RCURLY);
                 break;
             }
         }

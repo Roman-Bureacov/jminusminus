@@ -31,6 +31,7 @@ blockStatement ::= localVariableDeclarationStatement
 statement ::= block
             | IF parExpression statement [ ELSE statement ]
             | RETURN [ expression ] SEMI
+            | BREAK SEMI
             | SEMI
             | WHILE parExpression statement
             | FOR LPAREN [localVariableDeclarationStatement] SEMI
@@ -46,7 +47,7 @@ catches ::= CATCH LPAREN formalParameter RPAREN block
 
 catchesFinally ::= [ catches ] FINALLY block
 
-switchBody ::= { CASE expression COLN { statement } } [DEFAULT COLN { statement }]
+switchBody ::= { (CASE | DEFAULT) COLN [ block ] }
 
 formalParameters ::= LPAREN [ formalParameter { COMMA formalParameter } ] RPAREN
 
