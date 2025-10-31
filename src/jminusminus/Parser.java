@@ -2,6 +2,7 @@
 
 package jminusminus;
 
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import static jminusminus.TokenKind.*;
@@ -357,14 +358,20 @@ public class Parser {
         } else if (have(FOR)) {
             mustBe(LPAREN);
             ArrayList<JStatement> init = new ArrayList<>();
-            while (!have(SEMI)) {
-                init.add(statement());
+            if (!see(SEMI)) {
+                do {
+                    init.add(blockStatement());
+                } while (have(COMMA));
             }
+            mustBe(SEMI);
+
             JExpression condition = expression();
             ArrayList<JStatement> update = new ArrayList<>();
-            while (!have(SEMI)) {
-                update.add(statement());
-            }
+            do {
+                update.add(statementExpression());
+            } while (have(COMMA));
+            mustBe(SEMI);
+
             JStatement statement = statement();
             mustBe(RPAREN);
             return new JForStatement(line, init, condition, update, statement);
@@ -1192,8 +1199,8 @@ public class Parser {
      * Parses a literal and returns an AST for it.
      *
      * <pre>
-     *   literal ::= CHAR_LITERAL | FALSE | INT_LITERAL | LONG_LITERAL | DOUBLE_LITERAL
-     *               | FLOAT_LITERAL | NULL | STRING_LITERAL | TRUE
+     *   literal ::= CHAR_LITERAL | FALSE | INT_LITERAL | OCTAL_INTEGER | HEX_INTEGER | BINARY_INTEGER
+     *             | LONG_LITERAL | DOUBLE_LITERAL | FLOAT_LITERAL | NULL | STRING_LITERAL | TRUE
      * </pre>
      *
      * @return an AST for a literal.
@@ -1204,7 +1211,7 @@ public class Parser {
             return new JLiteralChar(line, scanner.previousToken().image());
         } else if (have(FALSE)) {
             return new JLiteralBoolean(line, scanner.previousToken().image());
-        } else if (have(INT_LITERAL)) {
+        } else if (have(INT_LITERAL) || have(OCTAL_INTEGER) || have(HEX_INTEGER) || have(BINARY_INTEGER)) {
             return new JLiteralInt(line, scanner.previousToken().image());
         } else if (have(LONG_LITERAL)) {
             return new JLiteralLong(line, scanner.previousToken().image());
