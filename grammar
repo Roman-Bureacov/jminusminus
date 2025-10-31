@@ -17,9 +17,11 @@ classDeclaration ::= CLASS IDENTIFIER [ EXTENDS qualifiedIdentifier ] classBody
 
 classBody ::= LCURLY { modifiers memberDecl } RCURLY
 
-memberDecl ::= IDENTIFIER formalParameters block
-             | ( VOID | type ) IDENTIFIER formalParameters ( block | SEMI )
+memberDecl ::= IDENTIFIER formalParameters [ throwsClause ] block
+             | ( VOID | type ) IDENTIFIER formalParameters [ throwsClause ] ( block | SEMI )
              | type variableDeclarators SEMI
+
+throwsClause ::= THROWS qualifiedIdentifier { COMMA qualifiedIdentifier }
 
 block ::= LCURLY { blockStatement } RCURLY
 

@@ -232,9 +232,9 @@ public class Parser {
      * Parses a member declaration and returns an AST for it.
      *
      * <pre>
-     *   memberDecl ::= IDENTIFIER formalParameters block
-     *                | ( VOID | type ) IDENTIFIER formalParameters ( block | SEMI )
-     *                | type variableDeclarators SEMI
+     *   memberDecl ::= IDENTIFIER formalParameters [ throwsClause ] block
+     *              | ( VOID | type ) IDENTIFIER formalParameters [ throwsClause ] ( block | SEMI )
+     *              | type variableDeclarators SEMI
      * </pre>
      *
      * @param mods the class member modifiers.
@@ -248,8 +248,12 @@ public class Parser {
             mustBe(IDENTIFIER);
             String name = scanner.previousToken().image();
             ArrayList<JFormalParameter> params = formalParameters();
+            ArrayList<TypeName> exceptions = null;
+            if (have(THROWS)) {
+                exceptions = throwsClause();
+            }
             JBlock body = block();
-            memberDecl = new JConstructorDeclaration(line, mods, name, params, null, body);
+            memberDecl = new JConstructorDeclaration(line, mods, name, params, exceptions, body);
         } else {
             Type type = null;
             if (have(VOID)) {
@@ -258,8 +262,12 @@ public class Parser {
                 mustBe(IDENTIFIER);
                 String name = scanner.previousToken().image();
                 ArrayList<JFormalParameter> params = formalParameters();
+                ArrayList<TypeName> exceptions = null;
+                if (see(THROWS)) {
+                    exceptions = throwsClause();
+                }
                 JBlock body = have(SEMI) ? null : block();
-                memberDecl = new JMethodDeclaration(line, mods, name, type, params, null, body);
+                memberDecl = new JMethodDeclaration(line, mods, name, type, params, exceptions, body);
             } else {
                 type = type();
                 if (seeIdentLParen()) {
@@ -267,8 +275,12 @@ public class Parser {
                     mustBe(IDENTIFIER);
                     String name = scanner.previousToken().image();
                     ArrayList<JFormalParameter> params = formalParameters();
+                    ArrayList<TypeName> exceptions = null;
+                    if (see(THROWS)) {
+                        exceptions = throwsClause();
+                    }
                     JBlock body = have(SEMI) ? null : block();
-                    memberDecl = new JMethodDeclaration(line, mods, name, type, params, null, body);
+                    memberDecl = new JMethodDeclaration(line, mods, name, type, params, exceptions, body);
                 } else {
                     // A field.
                     memberDecl = new JFieldDeclaration(line, mods, variableDeclarators(type));
@@ -277,6 +289,25 @@ public class Parser {
             }
         }
         return memberDecl;
+    }
+
+    /**
+     * Parses a throwsClause and returns an AST for it.
+     *
+     * <pre>
+     *     throwsClause ::= THROWS qualifiedIdentifier { COMMA qualifiedIdentifier }
+     * </pre>
+     *
+     * @return an AST for a throwsClause
+     */
+    private ArrayList<TypeName> throwsClause() {
+        ArrayList<TypeName> exc = new ArrayList<>();
+        mustBe(THROWS);
+        do {
+            exc.add(qualifiedIdentifier());
+        } while (have(COMMA));
+
+        return exc;
     }
 
     /**
