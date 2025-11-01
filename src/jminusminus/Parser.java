@@ -555,7 +555,7 @@ public class Parser {
      * Parses a formal parameter and returns an AST for it.
      *
      * <pre>
-     *   formalParameter ::= type IDENTIFIER
+     *   formalParameter ::= type IDENTIFIER [ ELLIPSIS ]
      * </pre>
      *
      * @return an AST for a formal parameter.
@@ -563,6 +563,9 @@ public class Parser {
     private JFormalParameter formalParameter() {
         int line = scanner.token().line();
         Type type = type();
+        if (have(ELLIPSIS)) {
+            type = new ArrayTypeName(type);
+        }
         mustBe(IDENTIFIER);
         String name = scanner.previousToken().image();
         return new JFormalParameter(line, name, type);

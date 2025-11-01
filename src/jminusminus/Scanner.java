@@ -349,7 +349,15 @@ class Scanner {
                 return new TokenInfo(EOF, line);
             case '.':
                 nextCh();
-                if (!isDigit(ch)) {
+                if (ch == '.') {
+                    nextCh();
+                    if (ch == '.') {
+                        nextCh();
+                        return new TokenInfo(ELLIPSIS, line);
+                    } else {
+                        reportScannerError("Unexpected token ..%c", ch);
+                    }
+                } else if (!isDigit(ch)) {
                     return new TokenInfo(DOT, line);
                 } else {
                     buffer = new StringBuffer();

@@ -62,6 +62,9 @@ enum TokenKind {
     VOLATILE("volatile"),
     WHILE("while"),
 
+    // extra
+    ELLIPSIS("..."),
+
     // Operators.
     ASSIGN("="), EQUAL("=="), DEC("--"), INC("++"),
     ASHR(">>"), ASHL("<<"), LSHR(">>>"),

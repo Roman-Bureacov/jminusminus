@@ -66,6 +66,9 @@ VOID           ::= "void"
 VOLATILE       ::= "volatile"
 WHILE          ::= "while"
 
+// extra
+ELLIPSIS       ::= "..."
+
 // Separators
 COMMA          ::= ","
 DOT            ::= "."

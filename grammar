@@ -51,7 +51,7 @@ switchBody ::= { (CASE | DEFAULT) COLN [ block ] }
 
 formalParameters ::= LPAREN [ formalParameter { COMMA formalParameter } ] RPAREN
 
-formalParameter ::= type IDENTIFIER
+formalParameter ::= type IDENTIFIER [ ELLIPSIS ]
 
 parExpression ::= LPAREN expression RPAREN
 
