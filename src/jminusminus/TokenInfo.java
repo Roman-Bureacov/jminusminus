@@ -61,6 +61,7 @@ enum TokenKind {
     VOID("void"),
     VOLATILE("volatile"),
     WHILE("while"),
+    UNTIL("until"),
 
     // extra
     ELLIPSIS("..."),

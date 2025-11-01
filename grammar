@@ -33,6 +33,7 @@ statement ::= block
             | RETURN [ expression ] SEMI
             | BREAK SEMI
             | SEMI
+            | DO block ( UNTIL | WHILE ) parExpression SEMI
             | WHILE parExpression statement
             | FOR LPAREN [localVariableDeclarationStatement] SEMI
                          [expression] SEMI
