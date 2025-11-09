@@ -153,8 +153,16 @@ class JCompilationUnit extends JAST {
      * {@inheritDoc}
      */
     public JAST analyze(Context context) {
+        boolean publicFound = false;
         for (JAST typeDeclaration : typeDeclarations) {
-            typeDeclaration.analyze(this.context);
+            JClassDeclaration c = (JClassDeclaration) typeDeclaration.analyze(this.context);
+            if (c.mods().contains("public")) {
+                if (publicFound) {
+                    reportSemanticError(line, "Only one outer class may be declared public in a file");
+                } else {
+                    publicFound = true;
+                }
+            }
         }
         return this;
     }

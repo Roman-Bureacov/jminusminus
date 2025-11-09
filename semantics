@@ -41,6 +41,7 @@ JComparisonExpression:
 
 JCompilationUnit:
 - Imports must be valid.
+- Only one class may be public in a file
 
 JConstructorDeclaration:
 - A constructor must not be static or abstract.

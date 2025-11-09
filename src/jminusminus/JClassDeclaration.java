@@ -85,6 +85,15 @@ class JClassDeclaration extends JAST implements JTypeDecl {
     }
 
     /**
+     * Returns the list of modifiers.
+     *
+     * @return the list of modifiers.
+     */
+    public ArrayList<String> mods() {
+        return mods;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public void preAnalyze(Context context) {
