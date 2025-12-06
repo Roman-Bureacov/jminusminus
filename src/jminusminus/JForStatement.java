@@ -2,6 +2,8 @@
 
 package jminusminus;
 
+import static jminusminus.CLConstants.GOTO;
+
 import java.util.ArrayList;
 
 /**
@@ -42,7 +44,14 @@ class JForStatement extends JStatement {
      * {@inheritDoc}
      */
     public JForStatement analyze(Context context) {
-        // TODO
+        if (init != null) init.replaceAll(stmt -> (JStatement) stmt.analyze(context));
+        if (condition != null) {
+            condition = condition.analyze(context);
+            condition.type().mustMatchExpected(line(), Type.BOOLEAN);
+        }
+        body = (JStatement) body.analyze(context);
+        if (update != null) update.replaceAll(stmt -> (JStatement) stmt.analyze(context));
+
         return this;
     }
 
@@ -50,7 +59,16 @@ class JForStatement extends JStatement {
      * {@inheritDoc}
      */
     public void codegen(CLEmitter output) {
-        // TODO
+        String forBegin = output.createLabel();
+        String forEnd = output.createLabel();
+
+        init.forEach(stmt -> stmt.codegen(output));
+        output.addLabel(forBegin);
+        if (condition != null) condition.codegen(output, forEnd, false);
+        body.codegen(output);
+        update.forEach(stmt -> stmt.codegen(output));
+        output.addBranchInstruction(GOTO, forBegin);
+        output.addLabel(forEnd);
     }
 
     /**
