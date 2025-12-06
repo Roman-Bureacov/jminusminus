@@ -26,7 +26,7 @@ class JThrowStatement extends JStatement {
      * {@inheritDoc}
      */
     public JStatement analyze(Context context) {
-        // TODO
+        if (expr != null) this.expr = expr.analyze(context);
         return this;
     }
 
@@ -34,7 +34,8 @@ class JThrowStatement extends JStatement {
      * {@inheritDoc}
      */
     public void codegen(CLEmitter output) {
-        // TODO
+        expr.codegen(output);
+        output.addNoArgInstruction(ATHROW);
     }
 
     /**
