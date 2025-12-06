@@ -880,7 +880,7 @@ public class Parser {
             JExpression ifTrue = expression();
             mustBe(COLN);
             JExpression ifFalse = expression();
-            lhs = new JTernaryExpression(line, lhs, ifTrue, ifFalse);
+            lhs = new JConditionalExpression(line, lhs, ifTrue, ifFalse);
         }
 
         return lhs;

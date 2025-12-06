@@ -5,6 +5,7 @@
     <inspection_tool class="BadOddness" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="CallToStringConcatCanBeReplacedByOperator" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="CastToIncompatibleInterface" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="ERRORS_ATTRIBUTES" />
+    <inspection_tool class="ClassEscapesItsScope" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ClassInitializer" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="onlyWarnWhenConstructor" value="true" />
     </inspection_tool>
@@ -34,6 +35,7 @@
     <inspection_tool class="FieldAccessedSynchronizedAndUnsynchronized" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="countGettersAndSetters" value="true" />
     </inspection_tool>
+    <inspection_tool class="FieldMayBeFinal" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="FieldMayBeStatic" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="FieldNamingConvention" enabled="false" level="WARNING" enabled_by_default="false">
       <extension name="ConstantNamingConvention" enabled="true">
@@ -121,13 +123,6 @@
     </inspection_tool>
     <inspection_tool class="OverlyStrongTypeCast" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreInMatchingInstanceof" value="false" />
-    </inspection_tool>
-    <inspection_tool class="ParameterHidingMemberVariable" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="m_ignoreInvisibleFields" value="true" />
-      <option name="m_ignoreStaticMethodParametersHidingInstanceFields" value="true" />
-      <option name="m_ignoreForConstructors" value="false" />
-      <option name="m_ignoreForPropertySetters" value="false" />
-      <option name="m_ignoreForAbstractMethods" value="false" />
     </inspection_tool>
     <inspection_tool class="ParameterNamingConvention" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="m_regex" value="p[A-Za-z\d]*" />
