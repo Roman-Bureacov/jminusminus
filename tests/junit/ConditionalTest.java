@@ -19,6 +19,12 @@ public class ConditionalTest extends TestCase {
         assertEquals(true, OrOperator.op(false, true));
         assertEquals(true, OrOperator.op(true, false));
         assertEquals(true, OrOperator.op(true, true));
+
+        // short-circuit test
+        assertEquals(2, OrOperator.opShortCircuit(false, false));
+        assertEquals(1, OrOperator.opShortCircuit(true, true));
+        assertEquals(1, OrOperator.opShortCircuit(true, false));
+        assertEquals(2, OrOperator.opShortCircuit(false, true));
     }
     
     public void testAnd() {
@@ -26,6 +32,12 @@ public class ConditionalTest extends TestCase {
         assertEquals(false, AndOperator.op(false, true));
         assertEquals(false, AndOperator.op(true, false));
         assertEquals(true, AndOperator.op(true, true));
+
+        // short-circuit test
+        assertEquals(1, AndOperator.opShortCircuit(false, false));
+        assertEquals(2, AndOperator.opShortCircuit(true, true));
+        assertEquals(2, AndOperator.opShortCircuit(true, false));
+        assertEquals(1, AndOperator.opShortCircuit(false, true));
     }
 
     public void testNot() {
