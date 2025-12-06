@@ -1,7 +1,7 @@
 package pass;
 
 public class ForeachLoop {
-    public int op() {
+    public static int op() {
         int[] arr = new int[5];
 
         for (int a : arr) {

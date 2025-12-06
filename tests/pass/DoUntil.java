@@ -1,7 +1,7 @@
 package pass;
 
 public class DoUntil {
-    public int op(int a) {
+    public static int op(int a) {
         int i = 0;
         do {
             i++;

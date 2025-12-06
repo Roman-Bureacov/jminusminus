@@ -1,7 +1,7 @@
 package pass;
 
 public class TryCatchManyFinally {
-    public int op(Object o) {
+    public static int op(Object o) {
 
         try {
             o.toString();

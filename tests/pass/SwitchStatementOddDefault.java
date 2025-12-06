@@ -1,7 +1,7 @@
 package pass;
 
 public class SwitchStatementOddDefault {
-    public int op(int a) {
+    public static int op(int a) {
         int a = 0;
 
         switch(a) {

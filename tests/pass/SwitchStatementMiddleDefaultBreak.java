@@ -1,7 +1,7 @@
 package pass;
 
 public class SwitchStatementMiddleDefaultBreak {
-    public int op(int i, int j) {
+    public static int op(int i, int j) {
         // with break
         switch (i) {
             case 0: i = -1; break;

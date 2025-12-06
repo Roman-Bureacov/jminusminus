@@ -1,7 +1,7 @@
 package pass;
 
 public class Throw {
-    public int op() {
+    public static int op() {
         throw new RuntimeException();
     }
 }

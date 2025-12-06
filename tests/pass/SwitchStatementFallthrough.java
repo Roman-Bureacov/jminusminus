@@ -1,7 +1,7 @@
 package pass;
 
 public class SwitchStatementFallthrough {
-    public int op(int a) {
+    public static int op(int a) {
         int a = 0;
 
         switch(a) {

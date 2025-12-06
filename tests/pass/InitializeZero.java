@@ -1,7 +1,7 @@
 package pass;
 
 public class InitializeZero {
-    public int op() {
+    public static int op() {
         int i = 0;
         return i;
     }

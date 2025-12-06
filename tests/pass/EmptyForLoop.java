@@ -1,7 +1,7 @@
 package pass;
 
 public class EmptyForLoop {
-    public void op() {
+    public static void op() {
         for (;;) {
 
         }

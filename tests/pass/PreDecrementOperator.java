@@ -1,7 +1,7 @@
 package pass;
 
 public class PreDecrementOperator {
-    public int op(int a) {
+    public static int op(int a) {
         return --a;
     }
 }
